@@ -3,85 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicolas Cage House - Caça-Níqueis</title>
+    <title>Zodíaco Chinês - Slot 8 Linhas</title>
     <style>
+        /* LAYOUT DIFERENTE: Templo Imperial (Vermelho e Ouro) */
         body {
-            font-family: monospace;
-            background-color: #111;
-            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1a0000;
+            background-image: radial-gradient(circle at center, #3a0000 0%, #1a0000 100%);
+            color: #ffd700;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .nav-link {
-            color: #fff;
+            color: #ffd700;
             text-decoration: none;
-            border: 1px solid #fff;
-            padding: 5px 10px;
+            border: 1px solid #ffd700;
+            padding: 8px 15px;
             margin-bottom: 20px;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #ffd700;
+            color: #1a0000;
         }
 
         .machine {
-            border: 4px solid #fff;
-            padding: 20px;
-            background-color: #222;
+            background-color: #4a0000;
+            border: 6px solid #ffd700;
+            border-radius: 10px;
+            padding: 25px;
             text-align: center;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px #000;
+            letter-spacing: 3px;
         }
 
         .painel-financeiro {
-            font-size: 20px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #0f0;
+            background-color: #000;
+            border: 2px inset #ffd700;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 22px;
+            font-weight: bold;
             color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .reels {
-            display: flex;
+        /* GRID 3x3 */
+        .reels-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background-color: #220000;
+            padding: 15px;
+            border: 3px solid #b8860b;
+            border-radius: 5px;
         }
 
         .reel {
-            width: 100px;
-            height: 100px;
-            border: 2px solid #fff;
-            background-color: #000;
-            background-size: cover;
-            background-position: center;
+            background-color: #111;
+            border: 2px solid #555;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px; /* Emojis como vetores gigantes */
+            box-shadow: inset 0 0 15px #000;
+            transition: transform 0.1s;
+        }
+
+        .reel.win-anim {
+            background-color: #ffd700;
+            animation: piscar 0.5s infinite alternate;
+        }
+
+        @keyframes piscar {
+            from { box-shadow: 0 0 10px #ffd700; border-color: #fff; }
+            to { box-shadow: 0 0 30px #ff4500; border-color: #ff4500; }
+        }
+
+        .botoes-aposta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 12px;
+            font-family: inherit;
             font-weight: bold;
-            font-family: monospace;
-            background-color: #fff;
-            color: #000;
-            border: none;
+            font-size: 14px;
             cursor: pointer;
+            border: 2px solid #ffd700;
+            background: linear-gradient(to bottom, #8b0000, #4a0000);
+            color: #ffd700;
             text-transform: uppercase;
+            text-shadow: 1px 1px 2px #000;
+            transition: all 0.2s;
         }
 
-        button:active {
-            background-color: #aaa;
+        button:hover:not(:disabled) {
+            background: linear-gradient(to bottom, #a52a2a, #8b0000);
+            transform: scale(1.02);
+        }
+
+        button:active:not(:disabled) {
+            background: #220000;
+            border-color: #666;
+            color: #888;
         }
 
         button:disabled {
-            background-color: #555;
+            background: #333;
+            border-color: #555;
+            color: #777;
             cursor: not-allowed;
         }
 
+        .btn-girar {
+            grid-column: span 2;
+            background: linear-gradient(to bottom, #006400, #003300);
+            font-size: 18px;
+            padding: 15px;
+            border-color: #32cd32;
+            color: #fff;
+        }
+        
+        .btn-girar:hover:not(:disabled) {
+            background: linear-gradient(to bottom, #228b22, #006400);
+        }
+
         #status {
-            margin-top: 20px;
-            font-size: 16px;
+            margin-top: 15px;
+            font-size: 14px;
             min-height: 40px;
-            text-transform: uppercase;
+            background-color: #000;
+            padding: 10px;
+            border: 1px solid #ffd700;
+            color: #fff;
         }
     </style>
 </head>
@@ -90,134 +170,175 @@
     <a href="index.html" class="nav-link">[ VOLTAR AO MENU ]</a>
 
     <div class="machine">
-        <h2>NICOLAS CAGE HOUSE</h2>
+        <h2>ZODÍACO CHINÊS</h2>
         
         <div class="painel-financeiro">
-            SALDO: R$ <span id="saldo">5.00</span>
+            <span>R$ <span id="saldo">5.00</span></span>
+            <span style="color: #ffd700;">APOSTA: R$ <span id="aposta-display">0.20</span></span>
         </div>
 
-        <div class="reels">
-            <div class="reel" id="r1"></div>
-            <div class="reel" id="r2"></div>
-            <div class="reel" id="r3"></div>
+        <div class="reels-container" id="grid">
+            <!-- 9 Quadros -->
+            <div class="reel" id="c0">🐀</div>
+            <div class="reel" id="c1">🐀</div>
+            <div class="reel" id="c2">🐀</div>
+            <div class="reel" id="c3">🐂</div>
+            <div class="reel" id="c4">🐂</div>
+            <div class="reel" id="c5">🐂</div>
+            <div class="reel" id="c6">🐅</div>
+            <div class="reel" id="c7">🐅</div>
+            <div class="reel" id="c8">🐅</div>
         </div>
 
-        <button id="btn-spin" onclick="iniciarGiro()">Girar / Aposta: R$ 1.00</button>
-        <div id="status">INSERIDO SALDO INICIAL.<br>AGUARDANDO GIRO.</div>
+        <div class="botoes-aposta">
+            <button onclick="setAposta(0.20)">R$ 0.20 (1 Linha)</button>
+            <button onclick="setAposta(0.40)">R$ 0.40 (2 Linhas)</button>
+            <button onclick="setAposta(0.80)">R$ 0.80 (4 Linhas)</button>
+            <button onclick="setAposta(1.60)">R$ 1.60 (8 Linhas)</button>
+            <button class="btn-girar" id="btn-spin" onclick="iniciarGiro()">GIRAR</button>
+        </div>
+
+        <div id="status">SISTEMA PRONTO.<br>SELECIONE A APOSTA E GIRE.</div>
     </div>
 
     <script>
-        const symbols = [
-            'nicolascereja.jpeg',
-            'nicolaslimao.jpeg',
-            'nicolasameixa.jpeg',
-            'nicolassino.jpeg',
-            'nicolasbar.jpeg',
-            'nicolassete.jpeg',
-            'nicolasdiamante.jpeg'
+        // Array Ponderado (Modo Hard) - Mais base, menos top tier
+        const roletaRNG = [
+            '🐀','🐀','🐀','🐀','🐀', // Rato (Baixo)
+            '🐂','🐂','🐂','🐂',      // Boi (Baixo)
+            '🐅','🐅','🐅',           // Tigre (Médio)
+            '🐇','🐇','🐇',           // Coelho (Médio)
+            '🐍','🐍',                // Cobra (Alto)
+            '🐉'                      // Dragão (Jackpot/Top)
+        ];
+
+        // Tabela de multiplicadores (baseada na aposta base de R$ 0.20 por linha)
+        const pagamentos = {
+            '🐉': 100.00,
+            '🐍': 25.00,
+            '🐇': 10.00,
+            '🐅': 10.00,
+            '🐂': 2.00,
+            '🐀': 1.00
+        };
+
+        // Definição exata das 8 Linhas de Pagamento do Grid (0 a 8)
+        const linhasPagamento = [
+            [3, 4, 5], // Linha 1: Horizontal Meio (R$ 0.20)
+            [0, 1, 2], // Linha 2: Horizontal Cima (R$ 0.40)
+            [6, 7, 8], // Linha 3: Horizontal Baixo (R$ 0.80)
+            [0, 3, 6], // Linha 4: Vertical Esquerda (R$ 0.80)
+            [1, 4, 7], // Linha 5: Vertical Meio (R$ 1.60)
+            [2, 5, 8], // Linha 6: Vertical Direita (R$ 1.60)
+            [0, 4, 8], // Linha 7: Diagonal 1 (R$ 1.60)
+            [2, 4, 6]  // Linha 8: Diagonal 2 (R$ 1.60)
         ];
 
         let saldo = 5.00;
-        const custoAposta = 1.00;
+        let apostaAtual = 0.20;
         let girando = false;
 
-        function atualizarPainel() {
-            document.getElementById('saldo').innerText = saldo.toFixed(2);
+        function setAposta(valor) {
+            if (girando) return;
+            apostaAtual = valor;
+            document.getElementById('aposta-display').innerText = apostaAtual.toFixed(2);
+            
+            let linhasAtivas = 1;
+            if (apostaAtual >= 0.40) linhasAtivas = 2;
+            if (apostaAtual >= 0.80) linhasAtivas = 4;
+            if (apostaAtual >= 1.60) linhasAtivas = 8;
+            
+            document.getElementById('status').innerHTML = `APOSTA CONFIGURADA: R$ ${apostaAtual.toFixed(2)}<br>LINHAS ATIVAS: ${linhasAtivas}`;
         }
 
-        function sortearSimbolo() {
-            return symbols[Math.floor(Math.random() * symbols.length)];
+        function sortear() {
+            return roletaRNG[Math.floor(Math.random() * roletaRNG.length)];
         }
 
         function iniciarGiro() {
             if (girando) return;
-            
             const status = document.getElementById('status');
 
-            if (saldo < custoAposta) {
-                status.innerHTML = "SALDO INSUFICIENTE.<br>GAME OVER.";
+            if (saldo < apostaAtual) {
+                status.innerHTML = "CRÉDITOS INSUFICIENTES.<br>GAME OVER.";
                 return;
             }
 
-            // Deduz a aposta
-            saldo -= custoAposta;
-            atualizarPainel();
+            // Limpa animações anteriores
+            for(let i=0; i<9; i++) {
+                document.getElementById('c'+i).classList.remove('win-anim');
+            }
+
+            saldo -= apostaAtual;
+            document.getElementById('saldo').innerText = saldo.toFixed(2);
             girando = true;
             document.getElementById('btn-spin').disabled = true;
-            status.innerHTML = "PROCESSANDO...";
+            status.innerHTML = "OS TAMBORES ESTÃO GIRANDO...";
 
-            // Simulação de giro mecânico (roleta)
-            let tempoGiro = 0;
+            let tempo = 0;
             const intervalo = setInterval(() => {
-                document.getElementById('r1').style.backgroundImage = `url(${sortearSimbolo()})`;
-                document.getElementById('r2').style.backgroundImage = `url(${sortearSimbolo()})`;
-                document.getElementById('r3').style.backgroundImage = `url(${sortearSimbolo()})`;
-                tempoGiro += 100;
-
-                // Para o giro após 2 segundos
-                if (tempoGiro >= 2000) {
-                    clearInterval(intervalo);
-                    finalizarGiro();
+                for(let i = 0; i < 9; i++) {
+                    document.getElementById('c'+i).innerText = sortear();
                 }
-            }, 100);
+                tempo += 50;
+
+                if (tempo >= 1500) {
+                    clearInterval(intervalo);
+                    verificarVitorias();
+                }
+            }, 50);
         }
 
-        function finalizarGiro() {
-            const r1 = sortearSimbolo();
-            const r2 = sortearSimbolo();
-            const r3 = sortearSimbolo();
+        function verificarVitorias() {
+            let linhasAtivas = 1;
+            if (apostaAtual >= 0.40) linhasAtivas = 2;
+            if (apostaAtual >= 0.80) linhasAtivas = 4;
+            if (apostaAtual >= 1.60) linhasAtivas = 8;
 
-            document.getElementById('r1').style.backgroundImage = `url(${r1})`;
-            document.getElementById('r2').style.backgroundImage = `url(${r2})`;
-            document.getElementById('r3').style.backgroundImage = `url(${r3})`;
+            let premioTotal = 0;
+            let linhasGanhas = 0;
 
-            calcularPremio(r1, r2, r3);
-            
+            // Extrai os valores finais do grid
+            const gridFinal = [];
+            for(let i = 0; i < 9; i++) {
+                gridFinal.push(document.getElementById('c'+i).innerText);
+            }
+
+            // Verifica apenas as linhas que o jogador pagou para varrer
+            for(let i = 0; i < linhasAtivas; i++) {
+                const pos1 = linhasPagamento[i][0];
+                const pos2 = linhasPagamento[i][1];
+                const pos3 = linhasPagamento[i][2];
+
+                const s1 = gridFinal[pos1];
+                const s2 = gridFinal[pos2];
+                const s3 = gridFinal[pos3];
+
+                if (s1 === s2 && s2 === s3) {
+                    // Trinca validada
+                    let multiplicador = pagamentos[s1] || 0;
+                    premioTotal += multiplicador;
+                    linhasGanhas++;
+
+                    // Dispara a animação visual nos quadros vencedores
+                    document.getElementById('c'+pos1).classList.add('win-anim');
+                    document.getElementById('c'+pos2).classList.add('win-anim');
+                    document.getElementById('c'+pos3).classList.add('win-anim');
+                }
+            }
+
+            const status = document.getElementById('status');
+            if (premioTotal > 0) {
+                saldo += premioTotal;
+                document.getElementById('saldo').innerText = saldo.toFixed(2);
+                status.innerHTML = `VITÓRIA! ALINHAMENTO EM ${linhasGanhas} LINHA(S).<br>GANHO TOTAL: R$ ${premioTotal.toFixed(2)}`;
+            } else {
+                status.innerHTML = "FALHA. NENHUMA LINHA ATIVA ALINHOU.";
+            }
+
             girando = false;
             document.getElementById('btn-spin').disabled = false;
         }
-
-        function calcularPremio(s1, s2, s3) {
-            const status = document.getElementById('status');
-            let premio = 0;
-            
-            // Contagem das cerejas (único símbolo que paga fora da trinca)
-            let contagemCereja = [s1, s2, s3].filter(s => s === 'nicolascereja.jpeg').length;
-
-            if (s1 === s2 && s2 === s3) {
-                // Alinhamento Triplo (Trinca)
-                switch(s1) {
-                    case 'nicolasdiamante.jpeg': premio = 1000.00; break;
-                    case 'nicolassete.jpeg': premio = 100.00; break;
-                    case 'nicolasbar.jpeg': premio = 50.00; break;
-                    case 'nicolassino.jpeg': premio = 20.00; break;
-                    case 'nicolaslimao.jpeg': 
-                    case 'nicolasameixa.jpeg': premio = 10.00; break;
-                    case 'nicolascereja.jpeg': premio = 10.00; break;
-                }
-                status.innerHTML = `TRINCA PERFEITA!<br>GANHOU R$ ${premio.toFixed(2)}`;
-            } else if (contagemCereja > 0) {
-                // Pagamento parcial de cerejas
-                if (contagemCereja === 1) premio = 2.00;
-                if (contagemCereja === 2) premio = 5.00;
-                status.innerHTML = `CEREJA DETECTADA.<br>GANHOU R$ ${premio.toFixed(2)}`;
-            } else {
-                status.innerHTML = "FALHA.<br>NENHUM ALINHAMENTO.";
-            }
-
-            if (premio > 0) {
-                saldo += premio;
-                atualizarPainel();
-            }
-        }
-
-        // Exibição inicial
-        window.onload = () => {
-            document.getElementById('r1').style.backgroundImage = `url(${symbols[0]})`;
-            document.getElementById('r2').style.backgroundImage = `url(${symbols[0]})`;
-            document.getElementById('r3').style.backgroundImage = `url(${symbols[0]})`;
-            atualizarPainel();
-        };
     </script>
 </body>
 </html>
