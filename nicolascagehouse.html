@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicolas Cage House - Cassino Hardcore</title>
+    <title>Nicolas Cage House - Cassino Hardcore (Audio Nativo)</title>
     <style>
         body {
             font-family: 'Arial Black', Impact, sans-serif;
@@ -94,7 +94,6 @@
             position: relative;
         }
 
-        /* Overlay de escurecimento para quadros que não ganharam */
         .reel::after {
             content: '';
             position: absolute;
@@ -104,7 +103,6 @@
             pointer-events: none;
         }
 
-        /* Ilumina apenas as linhas vencedoras */
         .reel.active::after {
             background-color: rgba(0, 0, 0, 0);
             box-shadow: inset 0 0 20px #ffaa00;
@@ -202,7 +200,50 @@
     </div>
 
     <script>
-        // Array de 100 posições que garante a matemática exata de 35% de RTP
+        // SINTETIZADOR DE ÁUDIO NATIVO (WEB AUDIO API)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        function gerarBip(frequencia, tipo, duracao, volume) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const oscilador = audioCtx.createOscillator();
+            const ganho = audioCtx.createGain();
+            
+            oscilador.type = tipo;
+            oscilador.frequency.setValueAtTime(frequencia, audioCtx.currentTime);
+            
+            ganho.gain.setValueAtTime(volume, audioCtx.currentTime);
+            ganho.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duracao);
+            
+            oscilador.connect(ganho);
+            ganho.connect(audioCtx.destination);
+            
+            oscilador.start();
+            oscilador.stop(audioCtx.currentTime + duracao);
+        }
+
+        function somGiroEixo() {
+            // Clique mecânico tenso
+            gerarBip(150 + Math.random() * 50, 'square', 0.05, 0.05);
+        }
+
+        function somPremioVicio() {
+            // Arpejo de vitória (Acorde Maior ascendente)
+            const notas = [440, 554, 659, 880]; // Lá Maior
+            let atraso = 0;
+            notas.forEach(freq => {
+                setTimeout(() => gerarBip(freq, 'sine', 0.3, 0.1), atraso);
+                atraso += 80;
+            });
+            setTimeout(() => gerarBip(1108, 'sine', 0.6, 0.15), atraso + 100);
+        }
+
+        function somFalha() {
+            gerarBip(110, 'sawtooth', 0.3, 0.05);
+        }
+
+        // MATEMÁTICA E LÓGICA DA CASSANÍQUEL (RTP 35%)
         const rngEngine = [
             ...Array(33).fill('nicolascereja.jpeg'),
             ...Array(24).fill('nicolaslimao.jpeg'),
@@ -213,7 +254,6 @@
             ...Array(2).fill('nicolasdiamante.jpeg')
         ];
 
-        // Multiplicadores da aposta por linha (Aposta por linha fixa em R$ 0.20)
         const pagamentos = {
             'nicolasdiamante.jpeg': 500,
             'nicolassete.jpeg': 100,
@@ -225,14 +265,8 @@
         };
 
         const linhasPagamento = [
-            [3, 4, 5], // Linha 1 (0.20)
-            [0, 1, 2], // Linha 2 (0.40)
-            [6, 7, 8], // Linha 3 (0.80)
-            [0, 3, 6], // Linha 4 (0.80)
-            [1, 4, 7], // Linha 5 (1.60)
-            [2, 5, 8], // Linha 6 (1.60)
-            [0, 4, 8], // Linha 7 (1.60)
-            [2, 4, 6]  // Linha 8 (1.60)
+            [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], 
+            [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] 
         ];
 
         let saldo = 5.00;
@@ -254,14 +288,18 @@
 
         function iniciarGiro() {
             if (girando) return;
+            
+            // Destrava o áudio no primeiro clique
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
             const status = document.getElementById('status');
 
             if (saldo < apostaAtual) {
                 status.innerText = "CRÉDITO INSUFICIENTE.";
+                somFalha();
                 return;
             }
 
-            // Reseta visual dos quadros
             for(let i=0; i<9; i++) {
                 document.getElementById('c'+i).classList.add('active');
             }
@@ -277,9 +315,10 @@
                 for(let i = 0; i < 9; i++) {
                     document.getElementById('c'+i).style.backgroundImage = `url('${sortear()}')`;
                 }
+                somGiroEixo(); // Toca o som mecânico a cada atualização visual
                 tempo += 50;
 
-                if (tempo >= 1200) { // Menos tempo girando, mais direto
+                if (tempo >= 1200) {
                     clearInterval(intervalo);
                     verificarVitorias();
                 }
@@ -291,15 +330,12 @@
             const linhasGanhas = new Set();
             const gridFinal = [];
 
-            // Lê o grid
             for(let i = 0; i < 9; i++) {
-                // Extrai o nome do arquivo da URL do background
                 let bgInfo = document.getElementById('c'+i).style.backgroundImage;
                 let fileName = bgInfo.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
                 gridFinal.push(fileName);
             }
 
-            // Verifica alinhamentos
             for(let i = 0; i < linhasAtivas; i++) {
                 const [p1, p2, p3] = linhasPagamento[i];
                 const s1 = gridFinal[p1];
@@ -307,14 +343,13 @@
                 const s3 = gridFinal[p3];
 
                 if (s1 === s2 && s2 === s3) {
-                    premioTotal += (pagamentos[s1] * 0.20); // Multiplica pela aposta da linha
+                    premioTotal += (pagamentos[s1] * 0.20);
                     linhasGanhas.add(p1);
                     linhasGanhas.add(p2);
                     linhasGanhas.add(p3);
                 }
             }
 
-            // Aplica filtro visual (escurece quem não ganhou)
             for(let i=0; i<9; i++) {
                 if(!linhasGanhas.has(i) && linhasGanhas.size > 0) {
                     document.getElementById('c'+i).classList.remove('active');
@@ -328,6 +363,7 @@
                 saldo += premioTotal;
                 document.getElementById('saldo').innerText = saldo.toFixed(2);
                 status.innerText = `VITÓRIA! GANHOU R$ ${premioTotal.toFixed(2)}`;
+                somPremioVicio(); // Dispara o arpejo de recompensa
             } else {
                 status.innerText = "FALHA. A BANCA VENCE.";
             }
@@ -336,7 +372,6 @@
             document.getElementById('btn-spin').disabled = false;
         }
 
-        // Setup inicial
         window.onload = () => {
             for(let i=0; i<9; i++) {
                 document.getElementById('c'+i).style.backgroundImage = `url('nicolascereja.jpeg')`;
