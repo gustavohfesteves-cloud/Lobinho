@@ -3,86 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu de Jogos - Estilo Flat</title>
+    <title>Menu Central e Caixa</title>
     <style>
         body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #111;
+            color: #fff;
             margin: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 400px; /* Limite para parecer mobile em desktop */
-            background-color: white;
-            border: 10px solid black; /* Borda grossa externa */
             padding: 20px;
             box-sizing: border-box;
+        }
+
+        .caixa-central {
+            background-color: #222;
+            border: 4px solid #0f0;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .painel-saldo {
+            font-size: 24px;
+            color: #0f0;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #0f0;
+        }
+
+        .input-deposito {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #555;
+            margin-bottom: 15px;
+        }
+
+        .btn-acao {
+            padding: 10px 20px;
+            font-weight: bold;
+            font-family: inherit;
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+            margin: 5px;
+        }
+
+        .btn-acao:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+
+        .btn-acao:disabled {
+            border-color: #555;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        .container-jogos {
+            width: 100%;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .game-link {
             text-decoration: none;
-            color: black;
+            color: white;
             display: block;
         }
 
         .game-item {
-            border: 8px solid black; /* Borda grossa interna */
-            background-size: cover;
-            background-position: center;
-            height: 150px;
-            display: flex;
-            align-items: flex-end;
-            padding: 10px;
-            box-sizing: border-box;
-            transition: transform 0.2s;
+            border: 4px solid #fff;
+            background-color: #000;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .game-item:hover {
             transform: scale(1.02);
+            border-color: #0f0;
         }
 
-        .game-title {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 5px 10px;
-            font-weight: bold;
-            text-transform: uppercase;
+        #log-transacao {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #aaa;
+            min-height: 15px;
         }
-
-        /* Definição das imagens de fundo (certifique-se de ter os arquivos na raiz) */
-        #rock-rangers { background-image: url('pinscherdiamante.jpeg'); }
-        #k9-terminators { background-image: url('jackdiamante.jpeg'); }
-        #nicolas-cage { background-image: url('nicolascagehouse.jpeg'); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <a href="pinscher.html" class="game-link">
-            <div class="game-item" id="rock-rangers">
-                <span class="game-title">rock rangers</span>
-            </div>
-        </a>
+    <div class="caixa-central">
+        <h2>CAIXA CENTRAL</h2>
+        <div class="painel-saldo">
+            SALDO: R$ <span id="display-saldo">0.00</span>
+        </div>
 
+        <input type="number" id="valor-deposito" class="input-deposito" placeholder="Valor mínimo: R$ 20.00" min="20">
+        
+        <div>
+            <button class="btn-acao" onclick="simularPix()">Depósito PIX</button>
+            <button class="btn-acao" id="btn-saque" onclick="solicitarSaque()">Saque</button>
+        </div>
+        
+        <div id="log-transacao">SISTEMA PRONTO.</div>
+    </div>
+
+    <div class="container-jogos">
         <a href="jackthealligatorcop.html" class="game-link">
-            <div class="game-item" id="k9-terminators">
-                <span class="game-title">k9 terminators</span>
-            </div>
+            <div class="game-item">Jack The Alligator Cop</div>
         </a>
-
+        <a href="pinscher.html" class="game-link">
+            <div class="game-item">Pinscher da Rangepsi</div>
+        </a>
         <a href="nicolascagehouse.html" class="game-link">
-            <div class="game-item" id="nicolas-cage">
-                <span class="game-title">Nicolas Cage House</span>
-            </div>
+            <div class="game-item">Nicolas Cage House</div>
         </a>
     </div>
 
+    <script>
+        // Chave de memória no navegador
+        const CHAVE_SALDO = 'saldoCassinoMegaMan';
+
+        function carregarSaldo() {
+            let saldo = parseFloat(localStorage.getItem(CHAVE_SALDO));
+            if (isNaN(saldo)) {
+                saldo = 0.00;
+                localStorage.setItem(CHAVE_SALDO, saldo.toFixed(2));
+            }
+            document.getElementById('display-saldo').innerText = saldo.toFixed(2);
+            validarSaque(saldo);
+        }
+
+        function simularPix() {
+            const input = document.getElementById('valor-deposito');
+            const valor = parseFloat(input.value);
+            const log = document.getElementById('log-transacao');
+
+            if (isNaN(valor) || valor < 20) {
+                log.innerText = "ERRO: O depósito mínimo é de R$ 20.00.";
+                log.style.color = "#ff3333";
+                return;
+            }
+
+            log.innerText = "PROCESSANDO GATEWAY DE PAGAMENTO...";
+            log.style.color = "#fff";
+            
+            // Simula o tempo de rede de um PIX
+            setTimeout(() => {
+                let saldoAtual = parseFloat(localStorage.getItem(CHAVE_SALDO)) || 0;
+                saldoAtual += valor;
+                localStorage.setItem(CHAVE_SALDO, saldoAtual.toFixed(2));
+                
+                carregarSaldo();
+                input.value = '';
+                log.innerText = `SUCESSO: R$ ${valor.toFixed(2)} ADICIONADOS À CARTEIRA.`;
+                log.style.color = "#0f0";
+            }, 1500);
+        }
+
+        function validarSaque(saldo) {
+            const btnSaque = document.getElementById('btn-saque');
+            // Trava matemática: Saque apenas acima de R$ 50.00
+            btnSaque.disabled = saldo < 50;
+        }
+
+        function solicitarSaque() {
+            let saldoAtual = parseFloat(localStorage.getItem(CHAVE_SALDO)) || 0;
+            const log = document.getElementById('log-transacao');
+
+            if (saldoAtual >= 50) {
+                log.innerText = `TRANSFERÊNCIA PIX DE R$ ${saldoAtual.toFixed(2)} ENVIADA.`;
+                log.style.color = "#0f0";
+                
+                localStorage.setItem(CHAVE_SALDO, (0).toFixed(2));
+                carregarSaldo();
+            }
+        }
+
+        window.onload = carregarSaldo;
+    </script>
 </body>
 </html>
