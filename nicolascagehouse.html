@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicolas Cage House</title>
+    <title>Nicolas Cage House - Caça-Níqueis</title>
     <style>
-        /* CSS Minimalista e Tático */
         body {
             font-family: monospace;
             background-color: #111;
@@ -32,6 +31,14 @@
             padding: 20px;
             background-color: #222;
             text-align: center;
+        }
+
+        .painel-financeiro {
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #0f0;
+            color: #0f0;
         }
 
         .reels {
@@ -65,36 +72,41 @@
             background-color: #aaa;
         }
 
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
         #status {
             margin-top: 20px;
             font-size: 16px;
-            min-height: 20px;
+            min-height: 40px;
             text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <!-- Rota plana de retorno ao menu principal -->
     <a href="index.html" class="nav-link">[ VOLTAR AO MENU ]</a>
 
     <div class="machine">
         <h2>NICOLAS CAGE HOUSE</h2>
         
+        <div class="painel-financeiro">
+            SALDO: R$ <span id="saldo">5.00</span>
+        </div>
+
         <div class="reels">
-            <!-- Os IDs representam os 3 tambores da máquina -->
             <div class="reel" id="r1"></div>
             <div class="reel" id="r2"></div>
             <div class="reel" id="r3"></div>
         </div>
 
-        <button onclick="spin()">Girar / Spin</button>
-        <div id="status">Aguardando comando...</div>
+        <button id="btn-spin" onclick="iniciarGiro()">Girar / Aposta: R$ 1.00</button>
+        <div id="status">INSERIDO SALDO INICIAL.<br>AGUARDANDO GIRO.</div>
     </div>
 
     <script>
-        // Array tático com a nomenclatura solicitada.
-        // O sistema espera que esses arquivos estejam na raiz (mesmo diretório do .html)
         const symbols = [
             'nicolascereja.jpeg',
             'nicolaslimao.jpeg',
@@ -105,35 +117,107 @@
             'nicolasdiamante.jpeg'
         ];
 
-        function spin() {
+        let saldo = 5.00;
+        const custoAposta = 1.00;
+        let girando = false;
+
+        function atualizarPainel() {
+            document.getElementById('saldo').innerText = saldo.toFixed(2);
+        }
+
+        function sortearSimbolo() {
+            return symbols[Math.floor(Math.random() * symbols.length)];
+        }
+
+        function iniciarGiro() {
+            if (girando) return;
+            
             const status = document.getElementById('status');
-            status.innerText = "PROCESSANDO...";
 
-            // Sorteio RNG (Random Number Generator) básico para os 3 tambores
-            const result = [
-                symbols[Math.floor(Math.random() * symbols.length)],
-                symbols[Math.floor(Math.random() * symbols.length)],
-                symbols[Math.floor(Math.random() * symbols.length)]
-            ];
+            if (saldo < custoAposta) {
+                status.innerHTML = "SALDO INSUFICIENTE.<br>GAME OVER.";
+                return;
+            }
 
-            // Injeta as imagens nos elementos HTML
-            document.getElementById('r1').style.backgroundImage = `url(${result[0]})`;
-            document.getElementById('r2').style.backgroundImage = `url(${result[1]})`;
-            document.getElementById('r3').style.backgroundImage = `url(${result[2]})`;
+            // Deduz a aposta
+            saldo -= custoAposta;
+            atualizarPainel();
+            girando = true;
+            document.getElementById('btn-spin').disabled = true;
+            status.innerHTML = "PROCESSANDO...";
 
-            // Lógica mínima de alinhamento visual (sem cálculo de crédito ainda)
-            if (result[0] === result[1] && result[1] === result[2]) {
-                status.innerText = "ALINHAMENTO TOTAL. JACKPOT.";
-            } else if (result[0] === result[1] || result[1] === result[2] || result[0] === result[2]) {
-                status.innerText = "ALINHAMENTO PARCIAL.";
+            // Simulação de giro mecânico (roleta)
+            let tempoGiro = 0;
+            const intervalo = setInterval(() => {
+                document.getElementById('r1').style.backgroundImage = `url(${sortearSimbolo()})`;
+                document.getElementById('r2').style.backgroundImage = `url(${sortearSimbolo()})`;
+                document.getElementById('r3').style.backgroundImage = `url(${sortearSimbolo()})`;
+                tempoGiro += 100;
+
+                // Para o giro após 2 segundos
+                if (tempoGiro >= 2000) {
+                    clearInterval(intervalo);
+                    finalizarGiro();
+                }
+            }, 100);
+        }
+
+        function finalizarGiro() {
+            const r1 = sortearSimbolo();
+            const r2 = sortearSimbolo();
+            const r3 = sortearSimbolo();
+
+            document.getElementById('r1').style.backgroundImage = `url(${r1})`;
+            document.getElementById('r2').style.backgroundImage = `url(${r2})`;
+            document.getElementById('r3').style.backgroundImage = `url(${r3})`;
+
+            calcularPremio(r1, r2, r3);
+            
+            girando = false;
+            document.getElementById('btn-spin').disabled = false;
+        }
+
+        function calcularPremio(s1, s2, s3) {
+            const status = document.getElementById('status');
+            let premio = 0;
+            
+            // Contagem das cerejas (único símbolo que paga fora da trinca)
+            let contagemCereja = [s1, s2, s3].filter(s => s === 'nicolascereja.jpeg').length;
+
+            if (s1 === s2 && s2 === s3) {
+                // Alinhamento Triplo (Trinca)
+                switch(s1) {
+                    case 'nicolasdiamante.jpeg': premio = 1000.00; break;
+                    case 'nicolassete.jpeg': premio = 100.00; break;
+                    case 'nicolasbar.jpeg': premio = 50.00; break;
+                    case 'nicolassino.jpeg': premio = 20.00; break;
+                    case 'nicolaslimao.jpeg': 
+                    case 'nicolasameixa.jpeg': premio = 10.00; break;
+                    case 'nicolascereja.jpeg': premio = 10.00; break;
+                }
+                status.innerHTML = `TRINCA PERFEITA!<br>GANHOU R$ ${premio.toFixed(2)}`;
+            } else if (contagemCereja > 0) {
+                // Pagamento parcial de cerejas
+                if (contagemCereja === 1) premio = 2.00;
+                if (contagemCereja === 2) premio = 5.00;
+                status.innerHTML = `CEREJA DETECTADA.<br>GANHOU R$ ${premio.toFixed(2)}`;
             } else {
-                status.innerText = "FALHA. TENTE NOVAMENTE.";
+                status.innerHTML = "FALHA.<br>NENHUM ALINHAMENTO.";
+            }
+
+            if (premio > 0) {
+                saldo += premio;
+                atualizarPainel();
             }
         }
 
-        // Executa um giro inicial ao carregar a página para preencher os tambores
-        window.onload = spin;
+        // Exibição inicial
+        window.onload = () => {
+            document.getElementById('r1').style.backgroundImage = `url(${symbols[0]})`;
+            document.getElementById('r2').style.backgroundImage = `url(${symbols[0]})`;
+            document.getElementById('r3').style.backgroundImage = `url(${symbols[0]})`;
+            atualizarPainel();
+        };
     </script>
-
 </body>
 </html>
