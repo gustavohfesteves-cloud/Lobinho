@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Jogos - Estilo Flat</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px; /* Limite para parecer mobile em desktop */
+            background-color: white;
+            border: 10px solid black; /* Borda grossa externa */
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-link {
+            text-decoration: none;
+            color: black;
+            display: block;
+        }
+
+        .game-item {
+            border: 8px solid black; /* Borda grossa interna */
+            background-size: cover;
+            background-position: center;
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.2s;
+        }
+
+        .game-item:hover {
+            transform: scale(1.02);
+        }
+
+        .game-title {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Definição das imagens de fundo (certifique-se de ter os arquivos na raiz) */
+        #rock-rangers { background-image: url('rockrangers.jpeg'); }
+        #k9-terminators { background-image: url('k9terminators.jpeg'); }
+        #nicolas-cage { background-image: url('nicolascagehouse.jpeg'); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="rockrangers.html" class="game-link">
+            <div class="game-item" id="rock-rangers">
+                <span class="game-title">rock rangers</span>
+            </div>
+        </a>
+
+        <a href="k9terminators.html" class="game-link">
+            <div class="game-item" id="k9-terminators">
+                <span class="game-title">k9 terminators</span>
+            </div>
+        </a>
+
+        <a href="nicolascagehouse.html" class="game-link">
+            <div class="game-item" id="nicolas-cage">
+                <span class="game-title">Nicolas Cage House</span>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>
