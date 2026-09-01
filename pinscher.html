@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinscher da Rangepsi - Slot</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0a0500;
+            background-image: radial-gradient(circle at top, #2b1a10 0%, #0a0500 100%);
+            color: #d4a373;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .nav-link {
+            color: #ff5500;
+            text-decoration: none;
+            border: 1px solid #ff5500;
+            padding: 5px 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            background-color: rgba(255, 85, 0, 0.1);
+        }
+
+        .nav-link:hover {
+            background-color: #ff5500;
+            color: #000;
+        }
+
+        .machine {
+            background: linear-gradient(180deg, #3d2314, #1a0f08);
+            border: 6px solid #8c4a23;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 25px rgba(255,85,0,0.1);
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Linha de coleira com spikes (estética pinscher) */
+        .machine::before {
+            content: '';
+            position: absolute;
+            top: -6px; left: -6px; right: -6px; height: 12px;
+            background: repeating-linear-gradient(90deg, #111, #111 15px, #aaa 15px, #aaa 20px);
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px solid #000;
+        }
+
+        h2 {
+            margin: 15px 0 20px 0;
+            font-size: 24px;
+            color: #ffaa00;
+            text-shadow: 2px 2px 0px #000, 0 0 10px #ff3300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .painel-led {
+            background-color: #050200;
+            border: 2px solid #d4a373;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff3333; /* Vermelho fúria */
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+            display: flex;
+            justify-content: space-between;
+            box-shadow: inset 0 0 15px #000;
+        }
+
+        .reels-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 25px;
+            background-color: #000;
+            padding: 12px;
+            border: 4px solid #5a3219;
+            box-shadow: 0 0 15px rgba(255, 85, 0, 0.2);
+        }
+
+        .reel {
+            background-color: #0a0a0a;
+            border: 1px solid #333;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .reel::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: background-color 0.2s;
+            pointer-events: none;
+        }
+
+        .reel.active::after {
+            background-color: rgba(0, 0, 0, 0);
+            box-shadow: inset 0 0 25px rgba(255, 170, 0, 0.4);
+        }
+
+        .botoes-aposta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #8c4a23;
+            background: linear-gradient(to bottom, #5a3219, #2b1a10);
+            color: #d4a373;
+            text-transform: uppercase;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.6);
+        }
+
+        button:active:not(:disabled) {
+            background: #1a0f08;
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            color: #ffaa00;
+        }
+
+        button:disabled {
+            background: #1a1a1a;
+            color: #555;
+            border-color: #333;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-girar {
+            grid-column: span 2;
+            background: linear-gradient(to bottom, #cc0000, #660000);
+            color: #fff;
+            font-size: 18px;
+            border: 1px solid #ff3333;
+            letter-spacing: 2px;
+        }
+        
+        .btn-girar:active:not(:disabled) {
+            background: #4d0000;
+        }
+
+        #status {
+            font-size: 13px;
+            min-height: 40px;
+            color: #d4a373;
+            background-color: #0a0500;
+            padding: 10px;
+            border: 1px solid #5a3219;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link">[ MENU PRINCIPAL ]</a>
+
+    <div class="machine">
+        <h2>PINSCHER DA RANGEPSI</h2>
+        
+        <div class="painel-led">
+            <span>RAÇÃO: R$ <span id="saldo">5.00</span></span>
+            <span style="color: #ffaa00;">MORDIDA: R$ <span id="aposta-display">0.20</span></span>
+        </div>
+
+        <div class="reels-container" id="grid">
+            <div class="reel active" id="c0"></div>
+            <div class="reel active" id="c1"></div>
+            <div class="reel active" id="c2"></div>
+            <div class="reel active" id="c3"></div>
+            <div class="reel active" id="c4"></div>
+            <div class="reel active" id="c5"></div>
+            <div class="reel active" id="c6"></div>
+            <div class="reel active" id="c7"></div>
+            <div class="reel active" id="c8"></div>
+        </div>
+
+        <div class="botoes-aposta">
+            <button onclick="setAposta(0.20, 1)">LATIDO (1 L)</button>
+            <button onclick="setAposta(0.40, 2)">ROSNADO (2 L)</button>
+            <button onclick="setAposta(0.80, 4)">ATAQUE (4 L)</button>
+            <button onclick="setAposta(1.60, 8)">FÚRIA (8 L)</button>
+            <button class="btn-girar" id="btn-spin" onclick="iniciarGiro()">ATACAR</button>
+        </div>
+
+        <div id="status">CACHORRO ACORDADO. AGUARDANDO COMANDO.</div>
+    </div>
+
+    <script>
+        // SINTETIZADOR DE ÁUDIO NATIVO
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        function gerarBip(frequencia, tipo, duracao, volume) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const oscilador = audioCtx.createOscillator();
+            const ganho = audioCtx.createGain();
+            oscilador.type = tipo;
+            oscilador.frequency.setValueAtTime(frequencia, audioCtx.currentTime);
+            ganho.gain.setValueAtTime(volume, audioCtx.currentTime);
+            ganho.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duracao);
+            oscilador.connect(ganho);
+            ganho.connect(audioCtx.destination);
+            oscilador.start();
+            oscilador.stop(audioCtx.currentTime + duracao);
+        }
+
+        function somGiroEixo() {
+            gerarBip(400, 'square', 0.05, 0.03);
+        }
+
+        function somPremioVicio() {
+            const notas = [523.25, 659.25, 783.99, 1046.50];
+            let atraso = 0;
+            notas.forEach(freq => {
+                setTimeout(() => gerarBip(freq, 'sine', 0.4, 0.1), atraso);
+                atraso += 100;
+            });
+            setTimeout(() => gerarBip(1318.51, 'square', 0.6, 0.1), atraso + 100);
+        }
+
+        function somFalha() {
+            gerarBip(150, 'sawtooth', 0.4, 0.05);
+        }
+
+        // MOTOR MATEMÁTICO (RTP 44.20%)
+        const rngEngine = [
+            ...Array(39).fill('pinschercereja.jpeg'),
+            ...Array(28).fill('pinscherlimao.jpeg'),
+            ...Array(18).fill('pinscherameixa.jpeg'),
+            ...Array(9).fill('pinschersino.jpeg'),
+            ...Array(4).fill('pinscherbar.jpeg'),
+            ...Array(1).fill('pinschersete.jpeg'),
+            ...Array(1).fill('pinscherdiamante.jpeg')
+        ];
+
+        const pagamentos = {
+            'pinscherdiamante.jpeg': 500,
+            'pinschersete.jpeg': 100,
+            'pinscherbar.jpeg': 50,
+            'pinschersino.jpeg': 20,
+            'pinscherameixa.jpeg': 12,
+            'pinscherlimao.jpeg': 8,
+            'pinschercereja.jpeg': 3
+        };
+
+        const linhasPagamento = [
+            [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], 
+            [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] 
+        ];
+
+        let saldo = 5.00;
+        let apostaAtual = 0.20;
+        let linhasAtivas = 1;
+        let girando = false;
+
+        function setAposta(valor, linhas) {
+            if (girando) return;
+            apostaAtual = valor;
+            linhasAtivas = linhas;
+            document.getElementById('aposta-display').innerText = apostaAtual.toFixed(2);
+            document.getElementById('status').innerText = `MODO DE ATAQUE: ${linhas} LINHA(S).`;
+        }
+
+        function sortear() {
+            return rngEngine[Math.floor(Math.random() * rngEngine.length)];
+        }
+
+        function iniciarGiro() {
+            if (girando) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const status = document.getElementById('status');
+
+            if (saldo < apostaAtual) {
+                status.innerText = "RAÇÃO INSUFICIENTE.";
+                somFalha();
+                return;
+            }
+
+            for(let i=0; i<9; i++) {
+                document.getElementById('c'+i).classList.add('active');
+            }
+
+            saldo -= apostaAtual;
+            document.getElementById('saldo').innerText = saldo.toFixed(2);
+            girando = true;
+            document.getElementById('btn-spin').disabled = true;
+            status.innerText = "CACHORRO ROSNANDO...";
+
+            let tempo = 0;
+            const intervalo = setInterval(() => {
+                for(let i = 0; i < 9; i++) {
+                    document.getElementById('c'+i).style.backgroundImage = `url('${sortear()}')`;
+                }
+                somGiroEixo(); 
+                tempo += 50;
+
+                if (tempo >= 1200) {
+                    clearInterval(intervalo);
+                    verificarVitorias();
+                }
+            }, 50);
+        }
+
+        function verificarVitorias() {
+            let premioTotal = 0;
+            const linhasGanhas = new Set();
+            const gridFinal = [];
+
+            for(let i = 0; i < 9; i++) {
+                let bgInfo = document.getElementById('c'+i).style.backgroundImage;
+                let fileName = bgInfo.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+                gridFinal.push(fileName);
+            }
+
+            for(let i = 0; i < linhasAtivas; i++) {
+                const [p1, p2, p3] = linhasPagamento[i];
+                const s1 = gridFinal[p1];
+                const s2 = gridFinal[p2];
+                const s3 = gridFinal[p3];
+
+                if (s1 === s2 && s2 === s3) {
+                    premioTotal += (pagamentos[s1] * 0.20);
+                    linhasGanhas.add(p1);
+                    linhasGanhas.add(p2);
+                    linhasGanhas.add(p3);
+                }
+            }
+
+            for(let i=0; i<9; i++) {
+                if(!linhasGanhas.has(i) && linhasGanhas.size > 0) {
+                    document.getElementById('c'+i).classList.remove('active');
+                } else if (linhasGanhas.size === 0) {
+                    document.getElementById('c'+i).classList.remove('active');
+                }
+            }
+
+            const status = document.getElementById('status');
+            if (premioTotal > 0) {
+                saldo += premioTotal;
+                document.getElementById('saldo').innerText = saldo.toFixed(2);
+                status.innerText = `ALVO MORDIDO! RECOMPENSA: R$ ${premioTotal.toFixed(2)}`;
+                somPremioVicio(); 
+            } else {
+                status.innerText = "ALVO ESCAPOU. O PINSCHER ERROU.";
+            }
+
+            girando = false;
+            document.getElementById('btn-spin').disabled = false;
+        }
+
+        window.onload = () => {
+            for(let i=0; i<9; i++) {
+                document.getElementById('c'+i).style.backgroundImage = `url('pinschercereja.jpeg')`;
+            }
+        };
+    </script>
+</body>
+</html>
