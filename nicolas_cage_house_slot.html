@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicolas Cage House - Slot 8 Linhas</title>
+    <style>
+        /* RESET E CORPO */
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background-color: #050505;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+
+        .nav-link {
+            color: #aaa;
+            text-decoration: none;
+            font-family: monospace;
+            border: 1px solid #555;
+            padding: 8px 15px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            background: #111;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            border-color: #fff;
+            background: #333;
+        }
+
+        /* GABINETE DA MÁQUINA */
+        .machine-cabinet {
+            background: linear-gradient(180deg, #444 0%, #222 10%, #111 100%);
+            border: 4px solid #555;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.9),
+                inset 0 5px 15px rgba(255,255,255,0.1),
+                inset 0 -5px 15px rgba(0,0,0,0.8);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* LETREIRO NEON */
+        .marquee {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ffaa00;
+            text-shadow: 0 0 10px #ffaa00, 0 0 20px #ff0000;
+            border-bottom: 3px groove #444;
+            padding-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* PAINÉIS DE LED (DISPLAYS) */
+        .led-panel-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .led-display {
+            flex: 1;
+            background: #050505;
+            border: 3px inset #444;
+            padding: 10px;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .led-display.red {
+            color: #f00;
+            text-shadow: 0 0 8px #f00;
+        }
+        
+        .led-display.yellow {
+            color: #ff0;
+            text-shadow: 0 0 8px #ff0;
+        }
+
+        .led-label {
+            font-size: 10px;
+            color: #888;
+            text-shadow: none;
+            display: block;
+            margin-bottom: 5px;
+            font-family: sans-serif;
+        }
+
+        .led-value {
+            font-size: 22px;
+        }
+
+        /* GRID 3x3 */
+        .grid-container {
+            background: #000;
+            padding: 15px;
+            border: 5px groove #555;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .slot {
+            aspect-ratio: 1 / 1;
+            background-color: #eee;
+            border: 3px solid #888;
+            border-radius: 8px;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.6), 0 2px 5px rgba(255,255,255,0.2);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            transition: filter 0.1s;
+        }
+
+        .slot.win-pulse {
+            animation: winFlash 0.5s alternate infinite;
+            border-color: #0f0;
+            box-shadow: 0 0 15px #0f0, inset 0 0 15px #0f0;
+        }
+
+        @keyframes winFlash {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.5); }
+        }
+
+        /* PAINEL DE CONTROLE (BOTÕES) */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 15px 5px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #111, 0 8px 10px rgba(0,0,0,0.5);
+            text-transform: uppercase;
+            transition: all 0.1s;
+            position: relative;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(6px);
+            box-shadow: 0 0px 0 #111, 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        button:disabled {
+            filter: grayscale(1) brightness(0.5);
+            cursor: not-allowed;
+            transform: translateY(6px);
+            box-shadow: 0 0px 0 #111;
+        }
+
+        /* Cores dos Botões de Aposta */
+        .btn-bet-1 { background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%); color: #000; }
+        .btn-bet-2 { background: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%); color: #000; }
+        .btn-bet-3 { background: linear-gradient(to bottom, #ff9a44 0%, #fc6076 100%); color: #fff; }
+        .btn-bet-4 { background: linear-gradient(to bottom, #f83600 0%, #f9d423 100%); color: #000; }
+        
+        .btn-spin {
+            grid-column: span 4;
+            background: linear-gradient(to bottom, #43e97b 0%, #38f9d7 100%);
+            color: #000;
+            font-size: 24px;
+            padding: 20px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+            box-shadow: 0 8px 0 #1a7a3a, 0 10px 15px rgba(0,0,0,0.5);
+        }
+        .btn-spin:active:not(:disabled) {
+            box-shadow: 0 0px 0 #1a7a3a, 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* MENSAGENS DO SISTEMA */
+        #sys-message {
+            background: #000;
+            border: 2px solid #333;
+            padding: 10px;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffaa00;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link">[ Voltar ao Menu ]</a>
+
+    <div class="machine-cabinet">
+        
+        <div class="marquee">NICOLAS CAGE HOUSE</div>
+
+        <!-- PAINÉIS SUPERIORES -->
+        <div class="led-panel-container">
+            <div class="led-display">
+                <span class="led-label">SALDO</span>
+                R$ <span class="led-value" id="disp-saldo">5.00</span>
+            </div>
+            <div class="led-display red">
+                <span class="led-label">APOSTA TOTAL</span>
+                R$ <span class="led-value" id="disp-aposta">0.20</span>
+            </div>
+            <div class="led-display yellow">
+                <span class="led-label">ÚLTIMO PRÊMIO</span>
+                R$ <span class="led-value" id="disp-premio">0.00</span>
+            </div>
+        </div>
+
+        <!-- GRID 3x3 -->
+        <div class="grid-container" id="grid">
+            <!-- Linha 0 (Top) -->
+            <div class="slot" id="s00"></div>
+            <div class="slot" id="s01"></div>
+            <div class="slot" id="s02"></div>
+            <!-- Linha 1 (Mid) -->
+            <div class="slot" id="s10"></div>
+            <div class="slot" id="s11"></div>
+            <div class="slot" id="s12"></div>
+            <!-- Linha 2 (Bot) -->
+            <div class="slot" id="s20"></div>
+            <div class="slot" id="s21"></div>
+            <div class="slot" id="s22"></div>
+        </div>
+
+        <!-- CONTROLES -->
+        <div class="controls">
+            <button class="btn-bet-1" onclick="setAposta(0.20)">Aposta<br>R$ 0.20<br><small>(1 Linha)</small></button>
+            <button class="btn-bet-2" onclick="setAposta(0.40)">Aposta<br>R$ 0.40<br><small>(2 Linhas)</small></button>
+            <button class="btn-bet-3" onclick="setAposta(0.80)">Aposta<br>R$ 0.80<br><small>(4 Linhas)</small></button>
+            <button class="btn-bet-4" onclick="setAposta(1.60)">Aposta<br>R$ 1.60<br><small>(8 Linhas)</small></button>
+            
+            <button class="btn-spin" id="btn-spin" onclick="iniciarGiro()">GIRAR</button>
+        </div>
+
+        <div id="sys-message">INSIRA A APOSTA E GIRE.</div>
+
+    </div>
+
+    <script>
+        // CONFIGURAÇÕES FINANCEIRAS
+        let saldo = 5.00;
+        let apostaAtual = 0.20;
+        let girando = false;
+
+        // TAMBOR VIRTUAL PONDERADO (HARD MODE ATIVADO)
+        // Mais cerejas e limões, dificílimo sair 7 ou diamante.
+        const roletaVirtual = [
+            'nicolascereja.jpeg', 'nicolascereja.jpeg', 'nicolascereja.jpeg', 'nicolascereja.jpeg',
+            'nicolaslimao.jpeg', 'nicolaslimao.jpeg', 'nicolaslimao.jpeg',
+            'nicolasameixa.jpeg', 'nicolasameixa.jpeg', 'nicolasameixa.jpeg',
+            'nicolassino.jpeg', 'nicolassino.jpeg',
+            'nicolasbar.jpeg',
+            'nicolassete.jpeg',
+            'nicolasdiamante.jpeg' // 1 chance em 15. Uma trinca é 1 em 3375.
+        ];
+
+        // REFERÊNCIAS DO GRID
+        const slots = [
+            ['s00', 's01', 's02'], // Linha 0 (Top)
+            ['s10', 's11', 's12'], // Linha 1 (Mid)
+            ['s20', 's21', 's22']  // Linha 2 (Bot)
+        ];
+
+        // DEFINIÇÃO DAS 8 LINHAS DE PAGAMENTO MATEMÁTICO (Coordenadas [linha, coluna])
+        const linhasDePagamento = [
+            [[1,0], [1,1], [1,2]], // L1: Meio Horizontal (Ativa com 0.20)
+            [[0,0], [0,1], [0,2]], // L2: Topo Horizontal (Ativa com 0.40)
+            [[2,0], [2,1], [2,2]], // L3: Baixo Horizontal (Ativa com 0.80)
+            [[0,0], [1,0], [2,0]], // L4: Esquerda Vertical (Ativa com 0.80)
+            [[0,1], [1,1], [2,1]], // L5: Meio Vertical (Ativa com 1.60)
+            [[0,2], [1,2], [2,2]], // L6: Direita Vertical (Ativa com 1.60)
+            [[0,0], [1,1], [2,2]], // L7: Diagonal Descendente (Ativa com 1.60)
+            [[2,0], [1,1], [0,2]]  // L8: Diagonal Ascendente (Ativa com 1.60)
+        ];
+
+        // TABELA DE PAGAMENTOS (Multiplicador sobre a aposta BASE de R$ 0.20 por linha)
+        const pagamentos = {
+            'nicolasdiamante.jpeg': 1000, // 3x paga R$ 200.00 por linha
+            'nicolassete.jpeg': 250,      // 3x paga R$ 50.00
+            'nicolasbar.jpeg': 100,       // 3x paga R$ 20.00
+            'nicolassino.jpeg': 50,       // 3x paga R$ 10.00
+            'nicolasameixa.jpeg': 20,     // 3x paga R$ 4.00
+            'nicolaslimao.jpeg': 20,      // 3x paga R$ 4.00
+            'nicolascereja.jpeg': 10      // 3x paga R$ 2.00
+        };
+
+        // FUNÇÕES DE INTERFACE
+        function atualizarPainel() {
+            document.getElementById('disp-saldo').innerText = saldo.toFixed(2);
+            document.getElementById('disp-aposta').innerText = apostaAtual.toFixed(2);
+        }
+
+        function setAposta(valor) {
+            if (girando) return;
+            apostaAtual = valor;
+            atualizarPainel();
+            document.getElementById('sys-message').innerText = `APOSTA CONFIGURADA: R$ ${valor.toFixed(2)}`;
+        }
+
+        function sortearSimb() {
+            return roletaVirtual[Math.floor(Math.random() * roletaVirtual.length)];
+        }
+
+        function limparVitorias() {
+            for(let l=0; l<3; l++) {
+                for(let c=0; c<3; c++) {
+                    document.getElementById(slots[l][c]).classList.remove('win-pulse');
+                }
+            }
+        }
+
+        // MOTOR PRINCIPAL
+        function iniciarGiro() {
+            if (girando) return;
+
+            if (saldo < apostaAtual) {
+                document.getElementById('sys-message').innerText = "SALDO INSUFICIENTE. INSIRA MAIS CRÉDITOS.";
+                return;
+            }
+
+            saldo -= apostaAtual;
+            document.getElementById('disp-premio').innerText = "0.00";
+            atualizarPainel();
+            limparVitorias();
+            girando = true;
+            document.getElementById('btn-spin').disabled = true;
+            document.getElementById('sys-message').innerText = "SORTEANDO...";
+
+            // MATRIZ DE RESULTADOS INTERNOS
+            let gridResultados = [
+                ['', '', ''],
+                ['', '', ''],
+                ['', '', '']
+            ];
+
+            // SIMULAÇÃO DO ROLO (Colunas param uma a uma)
+            let tempo = 0;
+            let colunasParadas = 0;
+
+            const intervalo = setInterval(() => {
+                // Atualiza visualmente as colunas que ainda estão rodando
+                for (let c = colunasParadas; c < 3; c++) {
+                    for (let l = 0; l < 3; l++) {
+                        let tempSimb = sortearSimb();
+                        document.getElementById(slots[l][c]).style.backgroundImage = `url(${tempSimb})`;
+                        gridResultados[l][c] = tempSimb; // Salva o estado atual
+                    }
+                }
+
+                tempo += 100;
+
+                // Para a Coluna 1
+                if (tempo === 1000) colunasParadas = 1;
+                // Para a Coluna 2
+                if (tempo === 1500) colunasParadas = 2;
+                // Para a Coluna 3 e Encerra
+                if (tempo >= 2000) {
+                    clearInterval(intervalo);
+                    verificarVitorias(gridResultados);
+                }
+            }, 100);
+        }
+
+        function verificarVitorias(grid) {
+            let numLinhasAtivas = 0;
+            if (apostaAtual === 0.20) numLinhasAtivas = 1;
+            if (apostaAtual === 0.40) numLinhasAtivas = 2;
+            if (apostaAtual === 0.80) numLinhasAtivas = 4;
+            if (apostaAtual === 1.60) numLinhasAtivas = 8;
+
+            let premioTotal = 0;
+            let linhasVencedoras = 0;
+
+            // Analisa apenas as linhas que a aposta atual desbloqueou
+            for (let i = 0; i < numLinhasAtivas; i++) {
+                let linhaCoord = linhasDePagamento[i];
+                let s1 = grid[linhaCoord[0][0]][linhaCoord[0][1]];
+                let s2 = grid[linhaCoord[1][0]][linhaCoord[1][1]];
+                let s3 = grid[linhaCoord[2][0]][linhaCoord[2][1]];
+
+                // Lógica Estrita: Apenas 3 Símbolos Iguais Ganham (Módulo Difícil)
+                if (s1 === s2 && s2 === s3) {
+                    let multiplicador = pagamentos[s1];
+                    let premioDestaLinha = multiplicador * 0.20; // Paga baseado na aposta por linha
+                    premioTotal += premioDestaLinha;
+                    linhasVencedoras++;
+
+                    // Efeito visual nos slots da linha vencedora
+                    document.getElementById(slots[linhaCoord[0][0]][linhaCoord[0][1]]).classList.add('win-pulse');
+                    document.getElementById(slots[linhaCoord[1][0]][linhaCoord[1][1]]).classList.add('win-pulse');
+                    document.getElementById(slots[linhaCoord[2][0]][linhaCoord[2][1]]).classList.add('win-pulse');
+                }
+            }
+
+            // FINALIZAÇÃO
+            document.getElementById('disp-premio').innerText = premioTotal.toFixed(2);
+            
+            if (premioTotal > 0) {
+                saldo += premioTotal;
+                atualizarPainel();
+                document.getElementById('sys-message').innerHTML = `JACKPOT! <br> VENCEU EM ${linhasVencedoras} LINHA(S). GANHOU R$ ${premioTotal.toFixed(2)}`;
+            } else {
+                document.getElementById('sys-message').innerText = "NÃO FOI DESSA VEZ.";
+            }
+
+            girando = false;
+            document.getElementById('btn-spin').disabled = false;
+        }
+
+        // INIT
+        window.onload = () => {
+            // Preenche o grid inicial aleatoriamente
+            for(let l=0; l<3; l++) {
+                for(let c=0; c<3; c++) {
+                    document.getElementById(slots[l][c]).style.backgroundImage = `url(${sortearSimb()})`;
+                }
+            }
+            atualizarPainel();
+        };
+
+    </script>
+</body>
+</html>
