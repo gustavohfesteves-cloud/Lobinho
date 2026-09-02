@@ -3,273 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nicolas Cage House - Cassino Hardcore (Audio Nativo)</title>
+    <title>Nicolas Cage House - Slot Tático</title>
     <style>
-        body {
-            font-family: 'Arial Black', Impact, sans-serif;
-            background-color: #050505;
-            background-image: linear-gradient(0deg, #000000 0%, #1a1a24 100%);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .nav-link {
-            color: #0ff;
-            text-decoration: none;
-            border: 1px solid #0ff;
-            padding: 5px 15px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-family: monospace;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        .nav-link:hover {
-            background-color: #0ff;
-            color: #000;
-        }
-
-        .machine {
-            background: linear-gradient(145deg, #2a2a35, #111116);
-            border: 8px solid #555;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 15px rgba(255,255,255,0.1);
-            max-width: 450px;
-            width: 100%;
-            border-top-color: #888;
-            border-left-color: #777;
-        }
-
-        h2 {
-            margin: 0 0 15px 0;
-            font-size: 26px;
-            color: #ffaa00;
-            text-shadow: 0 0 10px #ffaa00, 0 0 20px #ff0000;
-            letter-spacing: 2px;
-        }
-
-        .painel-led {
-            background-color: #000;
-            border: 3px inset #333;
-            padding: 10px 15px;
-            margin-bottom: 20px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 20px;
-            font-weight: bold;
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
-            display: flex;
-            justify-content: space-between;
-            box-shadow: inset 0 0 10px #050;
-        }
-
-        .reels-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-            background-color: #111;
-            padding: 15px;
-            border: 4px inset #444;
-            border-radius: 8px;
-        }
-
-        .reel {
-            background-color: #000;
-            border: 2px solid #222;
-            height: 95px;
-            background-size: cover;
-            background-position: center;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
-            position: relative;
-        }
-
-        .reel::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            transition: background-color 0.3s;
-            pointer-events: none;
-        }
-
-        .reel.active::after {
-            background-color: rgba(0, 0, 0, 0);
-            box-shadow: inset 0 0 20px #ffaa00;
-        }
-
-        .botoes-aposta {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            padding: 12px;
-            font-family: 'Arial Black', sans-serif;
-            font-size: 14px;
-            cursor: pointer;
-            border: 2px outset #aaa;
-            background: linear-gradient(to bottom, #d4d4d4, #777);
-            color: #000;
-            text-transform: uppercase;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-        }
-
-        button:active:not(:disabled) {
-            border-style: inset;
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-        }
-
-        button:disabled {
-            background: #444;
-            color: #777;
-            border-color: #333;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        .btn-girar {
-            grid-column: span 2;
-            background: linear-gradient(to bottom, #ff4444, #aa0000);
-            color: #fff;
-            font-size: 20px;
-            border-color: #ff8888;
-            text-shadow: 1px 1px 2px #000;
-        }
-        
-        .btn-girar:active:not(:disabled) {
-            background: #880000;
-        }
-
-        #status {
-            font-family: 'Courier New', Courier, monospace;
-            margin-top: 10px;
-            font-size: 14px;
-            min-height: 35px;
-            color: #0ff;
-        }
+        body { font-family: 'Courier New', Courier, monospace; background-color: #120202; background-image: radial-gradient(circle at top, #240505 0%, #0a0101 100%); color: #e0d0d0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .nav-link { color: #ffbb00; text-decoration: none; border: 1px solid #ffbb00; padding: 5px 15px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; transition: 0.3s; background-color: rgba(255, 187, 0, 0.1); }
+        .nav-link:hover { background-color: #ffbb00; color: #000; box-shadow: 0 0 10px #ffbb00; }
+        .machine { background: linear-gradient(180deg, #3a0a0a, #150202); border: 6px solid #6a1a1a; border-radius: 4px; padding: 25px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 25px rgba(255,50,0,0.1); max-width: 480px; width: 100%; position: relative; }
+        .machine::before { content: ''; position: absolute; top: -6px; left: -6px; right: -6px; height: 10px; background: repeating-linear-gradient(45deg, #ffbb00, #ffbb00 10px, #000 10px, #000 20px); border-radius: 4px 4px 0 0; }
+        h2 { margin: 15px 0 20px 0; font-size: 24px; color: #fff; text-shadow: 2px 2px 0px #000, 0 0 10px #ff3300, 0 0 20px #ffaa00; letter-spacing: 1px; text-transform: uppercase; }
+        .painel-led { background-color: #0a0202; border: 2px solid #b22222; padding: 12px 15px; margin-bottom: 25px; font-size: 18px; font-weight: bold; color: #ffbb00; text-shadow: 0 0 8px rgba(255, 187, 0, 0.6); display: flex; justify-content: space-between; box-shadow: inset 0 0 15px #000; }
+        .reels-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 25px; background-color: #000; padding: 12px; border: 4px solid #3a0a0a; box-shadow: 0 0 15px rgba(255, 50, 0, 0.3); }
+        .reel { background-color: #1a0505; border: 1px solid #441111; height: 100px; background-size: cover; background-position: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.9); position: relative; }
+        .reel::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); transition: background-color 0.2s; pointer-events: none; }
+        .reel.active::after { background-color: rgba(0, 0, 0, 0); box-shadow: inset 0 0 25px rgba(255, 100, 0, 0.4); }
+        .botoes-aposta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        button { padding: 14px; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; border: 1px solid #8a2a2a; background: linear-gradient(to bottom, #5a1a1a, #2a0a0a); color: #e0b0b0; text-transform: uppercase; box-shadow: 0 3px 5px rgba(0,0,0,0.6); }
+        button:active:not(:disabled) { background: #220505; transform: translateY(2px); box-shadow: 0 1px 2px rgba(0,0,0,0.8); color: #aa5a5a; }
+        button:disabled { background: #1a0a0a; color: #552222; border-color: #3a1a1a; cursor: not-allowed; box-shadow: none; }
+        .btn-girar { grid-column: span 2; background: linear-gradient(to bottom, #ff3300, #880000); color: #fff; font-size: 18px; border: 1px solid #ffaa00; letter-spacing: 2px; }
+        .btn-girar:active:not(:disabled) { background: #550000; }
+        #status { font-size: 13px; min-height: 40px; color: #c0a0a0; background-color: #150505; padding: 10px; border: 1px solid #4a1a1a; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="nav-link">[ VOLTAR ]</a>
+    <a href="index.html" class="nav-link">[ DEPARTAMENTO CENTRAL ]</a>
 
     <div class="machine">
         <h2>NICOLAS CAGE HOUSE</h2>
         
         <div class="painel-led">
-            <span>SALDO R$ <span id="saldo">5.00</span></span>
-            <span style="color: #ff3333;">APOSTA: R$ <span id="aposta-display">0.20</span></span>
+            <span>FUNDO: R$ <span id="saldo">0.00</span></span>
+            <span style="color: #ff5500;">CUSTO: R$ <span id="aposta-display">0.20</span></span>
         </div>
 
         <div class="reels-container" id="grid">
-            <div class="reel active" id="c0"></div>
-            <div class="reel active" id="c1"></div>
-            <div class="reel active" id="c2"></div>
-            <div class="reel active" id="c3"></div>
-            <div class="reel active" id="c4"></div>
-            <div class="reel active" id="c5"></div>
-            <div class="reel active" id="c6"></div>
-            <div class="reel active" id="c7"></div>
-            <div class="reel active" id="c8"></div>
+            <div class="reel active" id="c0"></div><div class="reel active" id="c1"></div><div class="reel active" id="c2"></div>
+            <div class="reel active" id="c3"></div><div class="reel active" id="c4"></div><div class="reel active" id="c5"></div>
+            <div class="reel active" id="c6"></div><div class="reel active" id="c7"></div><div class="reel active" id="c8"></div>
         </div>
 
         <div class="botoes-aposta">
-            <button onclick="setAposta(0.20, 1)">R$ 0.20 (1 L)</button>
-            <button onclick="setAposta(0.40, 2)">R$ 0.40 (2 L)</button>
-            <button onclick="setAposta(0.80, 4)">R$ 0.80 (4 L)</button>
-            <button onclick="setAposta(1.60, 8)">R$ 1.60 (8 L)</button>
-            <button class="btn-girar" id="btn-spin" onclick="iniciarGiro()">GIRAR</button>
+            <button onclick="setAposta(0.20, 1)">TÁTICA 1 (1 L)</button>
+            <button onclick="setAposta(0.40, 2)">TÁTICA 2 (2 L)</button>
+            <button onclick="setAposta(0.80, 4)">TÁTICA 3 (4 L)</button>
+            <button onclick="setAposta(1.60, 8)">VARREDURA (8 L)</button>
+            <button class="btn-girar" id="btn-spin" onclick="iniciarGiro()" disabled>EXECUTAR</button>
         </div>
 
-        <div id="status">INSERIDO. SELECIONE APOSTA.</div>
+        <div id="status">ESTABELECENDO CONEXÃO COM O COFRE...</div>
     </div>
 
     <script>
-        // SINTETIZADOR DE ÁUDIO NATIVO (WEB AUDIO API)
+        // REDE E AUTENTICAÇÃO
+        const KEY_EMAIL = 'cassino_user_email';
+        const KEY_SENHA = 'cassino_user_senha';
+        let saldoCloud = 0.00;
+
+        async function api(operacao, corpo = {}) {
+            const email = localStorage.getItem(KEY_EMAIL);
+            const senha = localStorage.getItem(KEY_SENHA);
+            if (!email || !senha) {
+                window.location.href = 'index.html';
+                return { ok: false };
+            }
+            const res = await fetch('/api/defesa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ operacao, email, senha, ...corpo })
+            });
+            return { ok: res.ok, data: await res.json() };
+        }
+
+        // SINTETIZADOR DE ÁUDIO NATIVO
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContext();
 
         function gerarBip(frequencia, tipo, duracao, volume) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const oscilador = audioCtx.createOscillator();
             const ganho = audioCtx.createGain();
-            
             oscilador.type = tipo;
             oscilador.frequency.setValueAtTime(frequencia, audioCtx.currentTime);
-            
             ganho.gain.setValueAtTime(volume, audioCtx.currentTime);
             ganho.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duracao);
-            
             oscilador.connect(ganho);
             ganho.connect(audioCtx.destination);
-            
             oscilador.start();
             oscilador.stop(audioCtx.currentTime + duracao);
         }
 
-        function somGiroEixo() {
-            // Clique mecânico tenso
-            gerarBip(150 + Math.random() * 50, 'square', 0.05, 0.05);
-        }
-
+        function somGiroEixo() { gerarBip(350, 'triangle', 0.05, 0.04); }
+        function somFalha() { gerarBip(100, 'sawtooth', 0.5, 0.05); }
         function somPremioVicio() {
-            // Arpejo de vitória (Acorde Maior ascendente)
-            const notas = [440, 554, 659, 880]; // Lá Maior
+            const notas = [440.00, 554.37, 659.25, 880.00];
             let atraso = 0;
-            notas.forEach(freq => {
-                setTimeout(() => gerarBip(freq, 'sine', 0.3, 0.1), atraso);
-                atraso += 80;
-            });
-            setTimeout(() => gerarBip(1108, 'sine', 0.6, 0.15), atraso + 100);
+            notas.forEach(freq => { setTimeout(() => gerarBip(freq, 'sine', 0.4, 0.1), atraso); atraso += 100; });
+            setTimeout(() => gerarBip(1108.73, 'square', 0.6, 0.1), atraso + 100);
         }
 
-        function somFalha() {
-            gerarBip(110, 'sawtooth', 0.3, 0.05);
-        }
-
-        // MATEMÁTICA E LÓGICA DA CASSANÍQUEL (RTP 35%)
+        // MOTOR MATEMÁTICO (Arquivos de Imagem do Nicolas Cage)
         const rngEngine = [
-            ...Array(33).fill('nicolascereja.jpeg'),
-            ...Array(24).fill('nicolaslimao.jpeg'),
-            ...Array(18).fill('nicolasameixa.jpeg'),
-            ...Array(12).fill('nicolassino.jpeg'),
-            ...Array(7).fill('nicolasbar.jpeg'),
-            ...Array(4).fill('nicolassete.jpeg'),
-            ...Array(2).fill('nicolasdiamante.jpeg')
+            ...Array(39).fill('nicolascereja.jpeg'), ...Array(28).fill('nicolaslimao.jpeg'),
+            ...Array(18).fill('nicolasameixa.jpeg'), ...Array(9).fill('nicolassino.jpeg'),
+            ...Array(4).fill('nicolasbar.jpeg'), ...Array(1).fill('nicolassete.jpeg'),
+            ...Array(1).fill('nicolasdiamante.jpeg')
         ];
 
-        const pagamentos = {
-            'nicolasdiamante.jpeg': 500,
-            'nicolassete.jpeg': 100,
-            'nicolasbar.jpeg': 50,
-            'nicolassino.jpeg': 20,
-            'nicolasameixa.jpeg': 12,
-            'nicolaslimao.jpeg': 8,
-            'nicolascereja.jpeg': 3
-        };
+        const pagamentos = { 'nicolasdiamante.jpeg': 500, 'nicolassete.jpeg': 100, 'nicolasbar.jpeg': 50, 'nicolassino.jpeg': 20, 'nicolasameixa.jpeg': 12, 'nicolaslimao.jpeg': 8, 'nicolascereja.jpeg': 3 };
+        const linhasPagamento = [ [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
 
-        const linhasPagamento = [
-            [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], 
-            [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] 
-        ];
-
-        let saldo = 5.00;
         let apostaAtual = 0.20;
         let linhasAtivas = 1;
         let girando = false;
@@ -279,43 +122,38 @@
             apostaAtual = valor;
             linhasAtivas = linhas;
             document.getElementById('aposta-display').innerText = apostaAtual.toFixed(2);
-            document.getElementById('status').innerText = `MODO: ${linhas} LINHAS ATIVAS.`;
+            document.getElementById('status').innerText = `MODO DE VARREDURA: ${linhas} LINHA(S).`;
         }
 
-        function sortear() {
-            return rngEngine[Math.floor(Math.random() * rngEngine.length)];
-        }
+        function sortear() { return rngEngine[Math.floor(Math.random() * rngEngine.length)]; }
 
-        function iniciarGiro() {
+        async function iniciarGiro() {
             if (girando) return;
-            
-            // Destrava o áudio no primeiro clique
             if (audioCtx.state === 'suspended') audioCtx.resume();
-
             const status = document.getElementById('status');
 
-            if (saldo < apostaAtual) {
-                status.innerText = "CRÉDITO INSUFICIENTE.";
+            if (saldoCloud < apostaAtual) {
+                status.innerText = "FUNDO TÁTICO INSUFICIENTE.";
                 somFalha();
                 return;
             }
 
-            for(let i=0; i<9; i++) {
-                document.getElementById('c'+i).classList.add('active');
-            }
+            for(let i=0; i<9; i++) document.getElementById('c'+i).classList.add('active');
 
-            saldo -= apostaAtual;
-            document.getElementById('saldo').innerText = saldo.toFixed(2);
+            saldoCloud -= apostaAtual;
+            document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
             girando = true;
             document.getElementById('btn-spin').disabled = true;
-            status.innerText = "PROCESSANDO RNG...";
+            status.innerText = "RASTREANDO ALVOS...";
+
+            api('atualizar_saldo', { novoSaldo: saldoCloud });
 
             let tempo = 0;
             const intervalo = setInterval(() => {
                 for(let i = 0; i < 9; i++) {
                     document.getElementById('c'+i).style.backgroundImage = `url('${sortear()}')`;
                 }
-                somGiroEixo(); // Toca o som mecânico a cada atualização visual
+                somGiroEixo(); 
                 tempo += 50;
 
                 if (tempo >= 1200) {
@@ -332,49 +170,48 @@
 
             for(let i = 0; i < 9; i++) {
                 let bgInfo = document.getElementById('c'+i).style.backgroundImage;
-                let fileName = bgInfo.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                gridFinal.push(fileName);
+                gridFinal.push(bgInfo.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''));
             }
 
             for(let i = 0; i < linhasAtivas; i++) {
                 const [p1, p2, p3] = linhasPagamento[i];
-                const s1 = gridFinal[p1];
-                const s2 = gridFinal[p2];
-                const s3 = gridFinal[p3];
-
-                if (s1 === s2 && s2 === s3) {
-                    premioTotal += (pagamentos[s1] * 0.20);
-                    linhasGanhas.add(p1);
-                    linhasGanhas.add(p2);
-                    linhasGanhas.add(p3);
+                if (gridFinal[p1] === gridFinal[p2] && gridFinal[p2] === gridFinal[p3]) {
+                    premioTotal += (pagamentos[gridFinal[p1]] * 0.20);
+                    linhasGanhas.add(p1); linhasGanhas.add(p2); linhasGanhas.add(p3);
                 }
             }
 
             for(let i=0; i<9; i++) {
-                if(!linhasGanhas.has(i) && linhasGanhas.size > 0) {
-                    document.getElementById('c'+i).classList.remove('active');
-                } else if (linhasGanhas.size === 0) {
-                    document.getElementById('c'+i).classList.remove('active');
-                }
+                if(!linhasGanhas.has(i) && linhasGanhas.size > 0) document.getElementById('c'+i).classList.remove('active');
+                else if (linhasGanhas.size === 0) document.getElementById('c'+i).classList.remove('active');
             }
 
             const status = document.getElementById('status');
             if (premioTotal > 0) {
-                saldo += premioTotal;
-                document.getElementById('saldo').innerText = saldo.toFixed(2);
-                status.innerText = `VITÓRIA! GANHOU R$ ${premioTotal.toFixed(2)}`;
-                somPremioVicio(); // Dispara o arpejo de recompensa
+                saldoCloud += premioTotal;
+                document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
+                status.innerText = `ALVO CONFIRMADO. TRANSFERINDO R$ ${premioTotal.toFixed(2)}`;
+                somPremioVicio();
+                api('atualizar_saldo', { novoSaldo: saldoCloud });
             } else {
-                status.innerText = "FALHA. A BANCA VENCE.";
+                status.innerText = "ALVO PERDIDO. VARREDURA FALHOU.";
             }
 
             girando = false;
             document.getElementById('btn-spin').disabled = false;
         }
 
-        window.onload = () => {
-            for(let i=0; i<9; i++) {
-                document.getElementById('c'+i).style.backgroundImage = `url('nicolascereja.jpeg')`;
+        window.onload = async () => {
+            for(let i=0; i<9; i++) document.getElementById('c'+i).style.backgroundImage = `url('nicolascereja.jpeg')`;
+            
+            const { ok, data } = await api('ler_saldo');
+            if (ok) {
+                saldoCloud = data.saldo;
+                document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
+                document.getElementById('status').innerText = "SISTEMA ARMADO. AGUARDANDO ORDEM.";
+                document.getElementById('btn-spin').disabled = false;
+            } else {
+                document.getElementById('status').innerText = "FALHA DE CONEXÃO. RETORNE AO MENU.";
             }
         };
     </script>
