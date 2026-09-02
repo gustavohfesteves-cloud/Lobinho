@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinscher 2 - Operação Avançada</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #050a14; background-image: radial-gradient(circle at 50% 0%, #0d1a33 0%, #03050a 100%); color: #e0f0ff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .nav-link { color: #00ffff; text-decoration: none; border: 1px solid #00ffff; padding: 8px 20px; margin-bottom: 25px; text-transform: uppercase; font-weight: 800; letter-spacing: 2px; border-radius: 4px; transition: all 0.3s ease; background-color: rgba(0, 255, 255, 0.05); }
+        .nav-link:hover { background-color: #00ffff; color: #000; box-shadow: 0 0 15px #00ffff, inset 0 0 5px rgba(0,0,0,0.5); }
+        
+        .machine { background: linear-gradient(145deg, #111a2e, #0a0e1a); border: 2px solid #00ffff; border-radius: 12px; padding: 30px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(0, 255, 255, 0.15), inset 0 0 40px rgba(0, 255, 255, 0.05); max-width: 500px; width: 100%; position: relative; overflow: hidden; }
+        .machine::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #ff007f, #00ffff, #ff007f); background-size: 200% 100%; animation: gradientMove 3s linear infinite; }
+        @keyframes gradientMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        
+        h2 { margin: 10px 0 25px 0; font-size: 28px; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8), 0 0 15px #00ffff, 0 0 30px #ff007f; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; }
+        
+        .painel-led { background-color: rgba(0, 0, 0, 0.6); border: 1px solid #334466; border-radius: 6px; padding: 15px 20px; margin-bottom: 25px; font-size: 18px; font-weight: bold; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); display: flex; justify-content: space-between; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .painel-led span:last-child { color: #ff007f; text-shadow: 0 0 10px rgba(255, 0, 127, 0.5); }
+        
+        .reels-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 30px; background-color: #03050a; padding: 15px; border-radius: 8px; border: 1px solid #1a2a4a; box-shadow: 0 10px 20px rgba(0,0,0,0.8), inset 0 0 30px rgba(0, 0, 0, 1); }
+        .reel { background-color: #050a10; border: 1px solid #223355; border-radius: 4px; height: 110px; background-size: cover; background-position: center; box-shadow: inset 0 0 25px rgba(0,0,0,0.9); position: relative; transition: all 0.2s; }
+        .reel::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.85); transition: background-color 0.3s; pointer-events: none; border-radius: 4px; }
+        .reel.active::after { background-color: rgba(0, 0, 0, 0); box-shadow: inset 0 0 30px rgba(0, 255, 255, 0.3); border: 1px solid #00ffff; }
+        
+        .botoes-aposta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        button { padding: 15px; font-family: 'Segoe UI', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; border-radius: 6px; border: 1px solid #2a3a5a; background: linear-gradient(180deg, #1a2a4a, #0d1a33); color: #8ab4f8; text-transform: uppercase; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: all 0.1s ease; letter-spacing: 1px; }
+        button:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 3px rgba(0,0,0,0.8); background: #0a1426; color: #5a84c8; }
+        button:disabled { background: #0a101a; color: #2a3a5a; border-color: #111a2a; cursor: not-allowed; box-shadow: none; }
+        
+        .btn-girar { grid-column: span 2; background: linear-gradient(180deg, #ff007f, #99004d); color: #fff; font-size: 20px; border: 1px solid #ff3399; text-shadow: 0 2px 4px rgba(0,0,0,0.6); box-shadow: 0 5px 15px rgba(255, 0, 127, 0.3); }
+        .btn-girar:active:not(:disabled) { background: #800040; box-shadow: 0 2px 5px rgba(255, 0, 127, 0.2); }
+        
+        #status { font-size: 14px; min-height: 45px; color: #8ab4f8; background-color: rgba(0, 0, 0, 0.4); padding: 12px; border-radius: 6px; border: 1px solid #1a2a4a; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link">[ DEPARTAMENTO CENTRAL ]</a>
+
+    <div class="machine">
+        <h2>PINSCHER 2.0</h2>
+        
+        <div class="painel-led">
+            <span>FUNDO: R$ <span id="saldo">0.00</span></span>
+            <span>CUSTO: R$ <span id="aposta-display">0.20</span></span>
+        </div>
+
+        <div class="reels-container" id="grid">
+            <div class="reel active" id="c0"></div><div class="reel active" id="c1"></div><div class="reel active" id="c2"></div>
+            <div class="reel active" id="c3"></div><div class="reel active" id="c4"></div><div class="reel active" id="c5"></div>
+            <div class="reel active" id="c6"></div><div class="reel active" id="c7"></div><div class="reel active" id="c8"></div>
+        </div>
+
+        <div class="botoes-aposta">
+            <button onclick="setAposta(0.20, 1)">TÁTICA 1 (1 L)</button>
+            <button onclick="setAposta(0.40, 2)">TÁTICA 2 (2 L)</button>
+            <button onclick="setAposta(0.80, 4)">TÁTICA 3 (4 L)</button>
+            <button onclick="setAposta(1.60, 8)">VARREDURA (8 L)</button>
+            <button class="btn-girar" id="btn-spin" onclick="iniciarGiro()" disabled>EXECUTAR ROTINA</button>
+        </div>
+
+        <div id="status">ESTABELECENDO CONEXÃO TÁTICA...</div>
+    </div>
+
+    <script>
+        // REDE E AUTENTICAÇÃO
+        const KEY_EMAIL = 'cassino_user_email';
+        const KEY_SENHA = 'cassino_user_senha';
+        let saldoCloud = 0.00;
+
+        async function api(operacao, corpo = {}) {
+            const email = localStorage.getItem(KEY_EMAIL);
+            const senha = localStorage.getItem(KEY_SENHA);
+            if (!email || !senha) {
+                window.location.href = 'index.html';
+                return { ok: false };
+            }
+            const res = await fetch('/api/defesa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ operacao, email, senha, ...corpo })
+            });
+            return { ok: res.ok, data: await res.json() };
+        }
+
+        // SINTETIZADOR DE ÁUDIO (Ajustado para sonoridade Synthwave)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        function gerarBip(frequencia, tipo, duracao, volume) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const oscilador = audioCtx.createOscillator();
+            const ganho = audioCtx.createGain();
+            oscilador.type = tipo;
+            oscilador.frequency.setValueAtTime(frequencia, audioCtx.currentTime);
+            ganho.gain.setValueAtTime(volume, audioCtx.currentTime);
+            ganho.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duracao);
+            oscilador.connect(ganho);
+            ganho.connect(audioCtx.destination);
+            oscilador.start();
+            oscilador.stop(audioCtx.currentTime + duracao);
+        }
+
+        function somGiroEixo() { gerarBip(800, 'square', 0.04, 0.015); }
+        function somFalha() { gerarBip(90, 'sawtooth', 0.5, 0.04); }
+        function somPremioVicio() {
+            const notas = [659.25, 830.61, 987.77, 1318.51];
+            let atraso = 0;
+            notas.forEach(freq => { setTimeout(() => gerarBip(freq, 'sine', 0.3, 0.08), atraso); atraso += 80; });
+            setTimeout(() => gerarBip(1661.22, 'square', 0.8, 0.08), atraso + 80);
+        }
+
+        // MOTOR MATEMÁTICO GERAÇÃO 2 (Calibrado para exatos 45.14% RTP)
+        const rngEngine = [
+            ...Array(44).fill('pinschercereja2.jpeg'), ...Array(26).fill('pinscherlimao2.jpeg'),
+            ...Array(15).fill('pinscherameixa2.jpeg'), ...Array(8).fill('pinschersino2.jpeg'),
+            ...Array(4).fill('pinscherbar2.jpeg'),     ...Array(2).fill('pinschersete2.jpeg'),
+            ...Array(1).fill('pinscherdiamante2.jpeg')
+        ];
+
+        const pagamentos = { 'pinscherdiamante2.jpeg': 500, 'pinschersete2.jpeg': 100, 'pinscherbar2.jpeg': 50, 'pinschersino2.jpeg': 20, 'pinscherameixa2.jpeg': 12, 'pinscherlimao2.jpeg': 8, 'pinschercereja2.jpeg': 3 };
+        const linhasPagamento = [ [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
+
+        let apostaAtual = 0.20;
+        let linhasAtivas = 1;
+        let girando = false;
+
+        function setAposta(valor, linhas) {
+            if (girando) return;
+            apostaAtual = valor;
+            linhasAtivas = linhas;
+            document.getElementById('aposta-display').innerText = apostaAtual.toFixed(2);
+            document.getElementById('status').innerText = `MODO DE VARREDURA: ${linhas} LINHA(S).`;
+        }
+
+        function sortear() { return rngEngine[Math.floor(Math.random() * rngEngine.length)]; }
+
+        async function iniciarGiro() {
+            if (girando) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const status = document.getElementById('status');
+
+            if (saldoCloud < apostaAtual) {
+                status.innerText = "FUNDO TÁTICO INSUFICIENTE.";
+                somFalha();
+                return;
+            }
+
+            for(let i=0; i<9; i++) document.getElementById('c'+i).classList.add('active');
+
+            saldoCloud -= apostaAtual;
+            document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
+            girando = true;
+            document.getElementById('btn-spin').disabled = true;
+            status.innerText = "PROCESSANDO ALGORITMO...";
+
+            api('atualizar_saldo', { novoSaldo: saldoCloud });
+
+            let tempo = 0;
+            const intervalo = setInterval(() => {
+                for(let i = 0; i < 9; i++) {
+                    document.getElementById('c'+i).style.backgroundImage = `url('${sortear()}')`;
+                }
+                somGiroEixo(); 
+                tempo += 40;
+
+                if (tempo >= 1200) {
+                    clearInterval(intervalo);
+                    verificarVitorias();
+                }
+            }, 40);
+        }
+
+        function verificarVitorias() {
+            let premioTotal = 0;
+            const linhasGanhas = new Set();
+            const gridFinal = [];
+
+            for(let i = 0; i < 9; i++) {
+                let bgInfo = document.getElementById('c'+i).style.backgroundImage;
+                gridFinal.push(bgInfo.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''));
+            }
+
+            for(let i = 0; i < linhasAtivas; i++) {
+                const [p1, p2, p3] = linhasPagamento[i];
+                if (gridFinal[p1] === gridFinal[p2] && gridFinal[p2] === gridFinal[p3]) {
+                    premioTotal += (pagamentos[gridFinal[p1]] * 0.20);
+                    linhasGanhas.add(p1); linhasGanhas.add(p2); linhasGanhas.add(p3);
+                }
+            }
+
+            for(let i=0; i<9; i++) {
+                if(!linhasGanhas.has(i) && linhasGanhas.size > 0) document.getElementById('c'+i).classList.remove('active');
+                else if (linhasGanhas.size === 0) document.getElementById('c'+i).classList.remove('active');
+            }
+
+            const status = document.getElementById('status');
+            if (premioTotal > 0) {
+                saldoCloud += premioTotal;
+                document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
+                status.innerText = `ALVO CONFIRMADO. TRANSFERINDO R$ ${premioTotal.toFixed(2)}`;
+                status.style.color = "#00ffff";
+                somPremioVicio();
+                api('atualizar_saldo', { novoSaldo: saldoCloud });
+            } else {
+                status.innerText = "ALVO PERDIDO. ROTAÇÃO ENCERRADA.";
+                status.style.color = "#8ab4f8";
+            }
+
+            girando = false;
+            document.getElementById('btn-spin').disabled = false;
+        }
+
+        window.onload = async () => {
+            for(let i=0; i<9; i++) document.getElementById('c'+i).style.backgroundImage = `url('pinschercereja2.jpeg')`;
+            
+            const { ok, data } = await api('ler_saldo');
+            if (ok) {
+                saldoCloud = data.saldo;
+                document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
+                document.getElementById('status').innerText = "SISTEMA ARMADO. AGUARDANDO ORDEM.";
+                document.getElementById('btn-spin').disabled = false;
+            } else {
+                document.getElementById('status').innerText = "FALHA DE CONEXÃO. RETORNE AO MENU.";
+                document.getElementById('status').style.color = "#ff007f";
+            }
+        };
+    </script>
+</body>
+</html>
