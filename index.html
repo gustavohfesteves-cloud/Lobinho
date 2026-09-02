@@ -6,7 +6,7 @@
     <title>Terminal Central - Cassino</title>
     <style>
         body { font-family: 'Courier New', Courier, monospace; background-color: #050505; color: #0f0; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .painel { background-color: #111; border: 2px solid #0f0; padding: 25px; text-align: center; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
+        .painel { background-color: #111; border: 2px solid #0f0; padding: 25px; text-align: center; width: 100%; max-width: 450px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
         h2 { margin-top: 0; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #0f0; padding-bottom: 10px; }
         input { width: 90%; padding: 12px; font-size: 14px; font-family: inherit; background-color: #000; color: #fff; border: 1px solid #444; margin-bottom: 15px; box-sizing: border-box; }
         input:focus { border-color: #0f0; outline: none; }
@@ -19,6 +19,8 @@
         .game-link { text-decoration: none; color: white; display: block; margin-bottom: 10px; }
         .game-item { border: 2px solid #555; background-color: #000; padding: 15px; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
         .game-item:hover { border-color: #0f0; color: #0f0; }
+        .game-item.placeholder { border-color: #333; color: #555; }
+        .game-item.placeholder:hover { border-color: #ffaa00; color: #ffaa00; }
         #log-msg { margin-top: 10px; font-size: 12px; min-height: 15px; }
         #tela-auth, #tela-dashboard { display: none; width: 100%; flex-direction: column; align-items: center; }
     </style>
@@ -61,10 +63,19 @@
         </div>
 
         <div class="painel" style="padding: 15px;">
-            <h2 style="font-size: 16px; margin-bottom: 15px;">MÓDULOS DE COMBATE</h2>
+            <h2 style="font-size: 16px; margin-bottom: 15px;">MÓDULOS DE COMBATE ATIVOS</h2>
             <a href="jackthealligatorcop.html" class="game-link"><div class="game-item">Jack The Alligator Cop</div></a>
             <a href="pinscher.html" class="game-link"><div class="game-item">Pinscher da Rangepsi</div></a>
             <a href="nicolascagehouse.html" class="game-link"><div class="game-item">Nicolas Cage House</div></a>
+            <a href="pinscher2.html" class="game-link"><div class="game-item">Pinscher 2.0</div></a>
+            
+            <h2 style="font-size: 16px; margin-top: 25px; margin-bottom: 15px; border-color: #555; color: #555;">SLOTS EM DESENVOLVIMENTO</h2>
+            <a href="SLOT_FUTURO_1_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_1</div></a>
+            <a href="SLOT_FUTURO_2_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_2</div></a>
+            <a href="SLOT_FUTURO_3_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_3</div></a>
+            <a href="SLOT_FUTURO_4_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_4</div></a>
+            <a href="SLOT_FUTURO_5_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_5</div></a>
+            <a href="SLOT_FUTURO_6_HTML" class="game-link"><div class="game-item placeholder">NOME_SLOT_FUTURO_6</div></a>
         </div>
     </div>
 
