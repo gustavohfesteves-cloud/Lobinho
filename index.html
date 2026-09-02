@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Central e Caixa</title>
+    <title>Terminal Central - Cassino</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
-            background-color: #111;
-            color: #fff;
+            background-color: #050505;
+            color: #0f0;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -18,38 +18,47 @@
             box-sizing: border-box;
         }
 
-        .caixa-central {
-            background-color: #222;
-            border: 4px solid #0f0;
-            padding: 20px;
+        /* Paineis Táticos */
+        .painel {
+            background-color: #111;
+            border: 2px solid #0f0;
+            padding: 25px;
             text-align: center;
             width: 100%;
             max-width: 400px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
-        }
-
-        .painel-saldo {
-            font-size: 24px;
-            color: #0f0;
-            font-weight: bold;
             margin-bottom: 20px;
-            text-shadow: 0 0 5px #0f0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
         }
 
-        .input-deposito {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
-            text-align: center;
+        h2 {
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Inputs e Botões */
+        input {
+            width: 90%;
+            padding: 12px;
+            font-size: 14px;
+            font-family: inherit;
             background-color: #000;
             color: #fff;
-            border: 1px solid #555;
+            border: 1px solid #444;
             margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #0f0;
+            outline: none;
         }
 
         .btn-acao {
-            padding: 10px 20px;
+            width: 90%;
+            padding: 12px;
             font-weight: bold;
             font-family: inherit;
             background-color: #000;
@@ -58,7 +67,7 @@
             cursor: pointer;
             text-transform: uppercase;
             transition: 0.2s;
-            margin: 5px;
+            margin-bottom: 10px;
         }
 
         .btn-acao:hover {
@@ -66,141 +75,244 @@
             color: #000;
         }
 
-        .btn-acao:disabled {
+        .btn-acao.secundario {
+            background-color: #111;
             border-color: #555;
-            color: #555;
+            color: #aaa;
+        }
+
+        .btn-acao.secundario:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .btn-acao:disabled {
+            border-color: #333;
+            color: #333;
             cursor: not-allowed;
         }
 
-        .container-jogos {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        /* Elementos do Caixa e Jogos */
+        .painel-saldo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #0f0;
         }
 
         .game-link {
             text-decoration: none;
             color: white;
             display: block;
+            margin-bottom: 10px;
         }
 
         .game-item {
-            border: 4px solid #fff;
+            border: 2px solid #555;
             background-color: #000;
             padding: 15px;
-            text-align: center;
-            font-size: 18px;
             font-weight: bold;
             text-transform: uppercase;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: 0.2s;
         }
 
         .game-item:hover {
-            transform: scale(1.02);
             border-color: #0f0;
+            color: #0f0;
         }
 
-        #log-transacao {
-            margin-top: 15px;
+        #log-msg {
+            margin-top: 10px;
             font-size: 12px;
-            color: #aaa;
             min-height: 15px;
+        }
+
+        /* Controle de Exibição */
+        #tela-auth, #tela-dashboard {
+            display: none; /* Ocultos por padrão até o script decidir */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 
-    <div class="caixa-central">
-        <h2>CAIXA CENTRAL</h2>
-        <div class="painel-saldo">
-            SALDO: R$ <span id="display-saldo">0.00</span>
+    <!-- ZONA DE AUTENTICAÇÃO -->
+    <div id="tela-auth">
+        <div class="painel">
+            <h2>ACESSO AO TERMINAL</h2>
+            <input type="email" id="input-email" placeholder="E-MAIL OPERACIONAL">
+            <input type="password" id="input-senha" placeholder="SENHA DE ACESSO">
+            
+            <button class="btn-acao" onclick="fazerLogin()">LOGIN</button>
+            <button class="btn-acao secundario" onclick="criarConta()">CRIAR CONTA</button>
+            
+            <div id="log-auth" style="margin-top: 15px; font-size: 12px;"></div>
         </div>
-
-        <input type="number" id="valor-deposito" class="input-deposito" placeholder="Valor mínimo: R$ 20.00" min="20">
-        
-        <div>
-            <button class="btn-acao" onclick="simularPix()">Depósito PIX</button>
-            <button class="btn-acao" id="btn-saque" onclick="solicitarSaque()">Saque</button>
-        </div>
-        
-        <div id="log-transacao">SISTEMA PRONTO.</div>
     </div>
 
-    <div class="container-jogos">
-        <a href="jackthealligatorcop.html" class="game-link">
-            <div class="game-item">Jack The Alligator Cop</div>
-        </a>
-        <a href="pinscher.html" class="game-link">
-            <div class="game-item">Pinscher da Rangepsi</div>
-        </a>
-        <a href="nicolascagehouse.html" class="game-link">
-            <div class="game-item">Nicolas Cage House</div>
-        </a>
+    <!-- ZONA DE OPERAÇÕES (CAIXA E JOGOS) -->
+    <div id="tela-dashboard">
+        <div class="painel">
+            <h2>CAIXA CENTRAL</h2>
+            <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">
+                OPERADOR: <span id="usuario-logado"></span>
+            </div>
+            
+            <div class="painel-saldo">
+                SALDO: R$ <span id="display-saldo">0.00</span>
+            </div>
+
+            <input type="number" id="valor-deposito" placeholder="Depósito Mínimo: R$ 20.00" min="20">
+            
+            <button class="btn-acao" onclick="simularPix()">DEPÓSITO PIX</button>
+            <button class="btn-acao secundario" id="btn-saque" onclick="solicitarSaque()">SOLICITAR SAQUE</button>
+            <button class="btn-acao secundario" onclick="fazerLogout()" style="margin-top: 15px; border-color: #ff3333; color: #ff3333;">DESCONECTAR</button>
+            
+            <div id="log-caixa" style="margin-top: 15px; font-size: 12px;"></div>
+        </div>
+
+        <div class="painel" style="padding: 15px;">
+            <h2 style="font-size: 16px; margin-bottom: 15px;">MÓDULOS DE COMBATE</h2>
+            <a href="jackthealligatorcop.html" class="game-link"><div class="game-item">Jack The Alligator Cop</div></a>
+            <a href="pinscher.html" class="game-link"><div class="game-item">Pinscher da Rangepsi</div></a>
+            <a href="nicolascagehouse.html" class="game-link"><div class="game-item">Nicolas Cage House</div></a>
+        </div>
     </div>
 
     <script>
-        // Chave de memória no navegador
-        const CHAVE_SALDO = 'saldoCassinoMegaMan';
+        // BANCO DE DADOS LOCAL (PROTÓTIPO)
+        const DB_CONTAS = 'cassinoMegaMan_contas';
+        const SESSAO_ATIVA = 'cassinoMegaMan_sessao';
 
-        function carregarSaldo() {
-            let saldo = parseFloat(localStorage.getItem(CHAVE_SALDO));
-            if (isNaN(saldo)) {
-                saldo = 0.00;
-                localStorage.setItem(CHAVE_SALDO, saldo.toFixed(2));
-            }
-            document.getElementById('display-saldo').innerText = saldo.toFixed(2);
-            validarSaque(saldo);
+        function obterContas() {
+            return JSON.parse(localStorage.getItem(DB_CONTAS)) || {};
         }
 
-        function simularPix() {
-            const input = document.getElementById('valor-deposito');
-            const valor = parseFloat(input.value);
-            const log = document.getElementById('log-transacao');
+        function salvarContas(contas) {
+            localStorage.setItem(DB_CONTAS, JSON.stringify(contas));
+        }
 
-            if (isNaN(valor) || valor < 20) {
-                log.innerText = "ERRO: O depósito mínimo é de R$ 20.00.";
+        // SISTEMA DE AUTENTICAÇÃO
+        function criarConta() {
+            const email = document.getElementById('input-email').value.trim();
+            const senha = document.getElementById('input-senha').value.trim();
+            const log = document.getElementById('log-auth');
+
+            if (!email || !senha) {
+                log.innerText = "ERRO: PREENCHA EMAIL E SENHA.";
                 log.style.color = "#ff3333";
                 return;
             }
 
-            log.innerText = "PROCESSANDO GATEWAY DE PAGAMENTO...";
-            log.style.color = "#fff";
+            const contas = obterContas();
+            if (contas[email]) {
+                log.innerText = "ERRO: CONTA JÁ REGISTRADA.";
+                log.style.color = "#ff3333";
+                return;
+            }
+
+            contas[email] = { senha: senha, saldo: 0.00 };
+            salvarContas(contas);
             
-            // Simula o tempo de rede de um PIX
-            setTimeout(() => {
-                let saldoAtual = parseFloat(localStorage.getItem(CHAVE_SALDO)) || 0;
-                saldoAtual += valor;
-                localStorage.setItem(CHAVE_SALDO, saldoAtual.toFixed(2));
-                
-                carregarSaldo();
-                input.value = '';
-                log.innerText = `SUCESSO: R$ ${valor.toFixed(2)} ADICIONADOS À CARTEIRA.`;
-                log.style.color = "#0f0";
-            }, 1500);
+            log.innerText = "CONTA CRIADA COM SUCESSO. FAÇA LOGIN.";
+            log.style.color = "#0f0";
+            document.getElementById('input-senha').value = '';
         }
 
-        function validarSaque(saldo) {
-            const btnSaque = document.getElementById('btn-saque');
-            // Trava matemática: Saque apenas acima de R$ 50.00
-            btnSaque.disabled = saldo < 50;
-        }
+        function fazerLogin() {
+            const email = document.getElementById('input-email').value.trim();
+            const senha = document.getElementById('input-senha').value.trim();
+            const log = document.getElementById('log-auth');
+            const contas = obterContas();
 
-        function solicitarSaque() {
-            let saldoAtual = parseFloat(localStorage.getItem(CHAVE_SALDO)) || 0;
-            const log = document.getElementById('log-transacao');
-
-            if (saldoAtual >= 50) {
-                log.innerText = `TRANSFERÊNCIA PIX DE R$ ${saldoAtual.toFixed(2)} ENVIADA.`;
-                log.style.color = "#0f0";
-                
-                localStorage.setItem(CHAVE_SALDO, (0).toFixed(2));
-                carregarSaldo();
+            if (contas[email] && contas[email].senha === senha) {
+                localStorage.setItem(SESSAO_ATIVA, email);
+                verificarSessao();
+            } else {
+                log.innerText = "ERRO: CREDENCIAIS INVÁLIDAS.";
+                log.style.color = "#ff3333";
             }
         }
 
-        window.onload = carregarSaldo;
+        function fazerLogout() {
+            localStorage.removeItem(SESSAO_ATIVA);
+            verificarSessao();
+        }
+
+        function verificarSessao() {
+            const usuarioAtivo = localStorage.getItem(SESSAO_ATIVA);
+            const telaAuth = document.getElementById('tela-auth');
+            const telaDashboard = document.getElementById('tela-dashboard');
+
+            if (usuarioAtivo) {
+                telaAuth.style.display = 'none';
+                telaDashboard.style.display = 'flex';
+                document.getElementById('usuario-logado').innerText = usuarioAtivo;
+                carregarSaldo(usuarioAtivo);
+            } else {
+                telaAuth.style.display = 'flex';
+                telaDashboard.style.display = 'none';
+                document.getElementById('input-senha').value = '';
+                document.getElementById('log-auth').innerText = '';
+            }
+        }
+
+        // SISTEMA FINANCEIRO DO CAIXA
+        function carregarSaldo(email) {
+            const contas = obterContas();
+            const saldo = contas[email].saldo;
+            document.getElementById('display-saldo').innerText = saldo.toFixed(2);
+            document.getElementById('btn-saque').disabled = saldo < 50;
+        }
+
+        function simularPix() {
+            const email = localStorage.getItem(SESSAO_ATIVA);
+            const input = document.getElementById('valor-deposito');
+            const valor = parseFloat(input.value);
+            const log = document.getElementById('log-caixa');
+
+            if (isNaN(valor) || valor < 20) {
+                log.innerText = "ERRO: DEPÓSITO MÍNIMO R$ 20.00";
+                log.style.color = "#ff3333";
+                return;
+            }
+
+            log.innerText = "PROCESSANDO GATEWAY...";
+            log.style.color = "#fff";
+            
+            setTimeout(() => {
+                const contas = obterContas();
+                contas[email].saldo += valor;
+                salvarContas(contas);
+                
+                carregarSaldo(email);
+                input.value = '';
+                log.innerText = `SUCESSO: R$ ${valor.toFixed(2)} CONFIRMADOS.`;
+                log.style.color = "#0f0";
+            }, 1000);
+        }
+
+        function solicitarSaque() {
+            const email = localStorage.getItem(SESSAO_ATIVA);
+            const contas = obterContas();
+            const saldoAtual = contas[email].saldo;
+            const log = document.getElementById('log-caixa');
+
+            if (saldoAtual >= 50) {
+                log.innerText = `SAQUE PIX R$ ${saldoAtual.toFixed(2)} EXECUTADO.`;
+                log.style.color = "#0f0";
+                
+                contas[email].saldo = 0;
+                salvarContas(contas);
+                carregarSaldo(email);
+            }
+        }
+
+        // Inicializa o terminal verificando a sessão
+        window.onload = verificarSessao;
     </script>
 </body>
 </html>
