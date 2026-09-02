@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Desenvolvedor - Override</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .terminal {
+            background-color: #050505;
+            border: 2px solid #33ff33;
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(51, 255, 51, 0.2);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px dashed #33ff33;
+            padding-bottom: 10px;
+        }
+
+        .input-dev {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background-color: #111;
+            color: #0f0;
+            border: 1px solid #33ff33;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .input-dev:focus {
+            background-color: #222;
+            outline: none;
+        }
+
+        .btn-override {
+            width: 100%;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: inherit;
+            background-color: #33ff33;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .btn-override:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .bloco-dados {
+            background-color: #111;
+            border: 1px solid #555;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        #log-dev {
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="nav-link">[ <- RETORNAR AO MENU CENTRAL ]</a>
+
+    <div class="terminal">
+        <h2>OVERRIDE DO DESENVOLVEDOR</h2>
+        
+        <label>E-MAIL DO ALVO:</label>
+        <input type="email" id="alvo-email" class="input-dev" placeholder="usuario@operacao.com">
+        
+        <label>INJEÇÃO DE FUNDOS (R$):</label>
+        <input type="number" id="alvo-valor" class="input-dev" placeholder="Ex: 500.00" min="0.01" step="0.01">
+        
+        <button class="btn-override" onclick="injetarFundos()">EXECUTAR OVERRIDE DE SALDO</button>
+        
+        <div id="log-dev">SISTEMA AGUARDANDO COMANDO.</div>
+
+        <div class="bloco-dados">
+            <div style="color: #fff; margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px;">CONTAS REGISTRADAS NO BANCO DE DADOS LOCAL:</div>
+            <pre id="display-banco" style="margin: 0;"></pre>
+        </div>
+    </div>
+
+    <script>
+        const DB_CONTAS = 'cassinoMegaMan_contas';
+
+        function obterContas() {
+            return JSON.parse(localStorage.getItem(DB_CONTAS)) || {};
+        }
+
+        function salvarContas(contas) {
+            localStorage.setItem(DB_CONTAS, JSON.stringify(contas));
+        }
+
+        function atualizarDisplayBanco() {
+            const contas = obterContas();
+            const display = document.getElementById('display-banco');
+            
+            if (Object.keys(contas).length === 0) {
+                display.innerText = "NENHUMA CONTA REGISTRADA NO MOMENTO.";
+                return;
+            }
+
+            // Oculta as senhas no log visual do admin por segurança básica
+            let visualizacao = {};
+            for (let email in contas) {
+                visualizacao[email] = {
+                    saldo: `R$ ${contas[email].saldo.toFixed(2)}`,
+                    status: "ATIVA"
+                };
+            }
+            display.innerText = JSON.stringify(visualizacao, null, 2);
+        }
+
+        function injetarFundos() {
+            const email = document.getElementById('alvo-email').value.trim();
+            const valorInjecao = parseFloat(document.getElementById('alvo-valor').value);
+            const log = document.getElementById('log-dev');
+            const contas = obterContas();
+
+            if (!email || isNaN(valorInjecao) || valorInjecao <= 0) {
+                log.innerText = "FALHA TÁTICA: PARÂMETROS INVÁLIDOS.";
+                log.style.color = "#ff3333";
+                return;
+            }
+
+            if (!contas[email]) {
+                log.innerText = "FALHA TÁTICA: ALVO NÃO ENCONTRADO NO BANCO DE DADOS.";
+                log.style.color = "#ff3333";
+                return;
+            }
+
+            // Executa a injeção
+            contas[email].saldo += valorInjecao;
+            salvarContas(contas);
+            
+            atualizarDisplayBanco();
+            
+            document.getElementById('alvo-valor').value = '';
+            log.innerText = `OVERRIDE CONCLUÍDO. R$ ${valorInjecao.toFixed(2)} INJETADOS EM [${email}].`;
+            log.style.color = "#33ff33";
+        }
+
+        // Carrega a leitura inicial do banco
+        window.onload = atualizarDisplayBanco;
+    </script>
+</body>
+</html>
