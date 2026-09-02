@@ -93,7 +93,6 @@
             oscilador.stop(audioCtx.currentTime + duracao);
         }
 
-        // Áudios com frequências ligeiramente ajustadas para estética Cyberpunk/Aguda
         function somGiroEixo() { gerarBip(600, 'square', 0.05, 0.02); }
         function somFalha() { gerarBip(120, 'sawtooth', 0.4, 0.05); }
         function somPremioVicio() {
@@ -103,15 +102,15 @@
             setTimeout(() => gerarBip(1479.98, 'square', 0.6, 0.1), atraso + 100);
         }
 
-        // MOTOR MATEMÁTICO (Arquivos de Imagem do Pinscher)
+        // MOTOR MATEMÁTICO (Arquivos de Imagem do Pinscher - Corrigidos)
         const rngEngine = [
-            ...Array(39).fill('pinchercereja.jpeg'), ...Array(28).fill('pinlimao.jpeg'),
-            ...Array(18).fill('pincherameixa.jpeg'), ...Array(9).fill('pinsino.jpeg'),
-            ...Array(4).fill('pincherbar.jpeg'), ...Array(1).fill('pinsete.jpeg'),
-            ...Array(1).fill('pincherdiamante.jpeg')
+            ...Array(39).fill('pinschercereja.jpeg'), ...Array(28).fill('pinscherlimao.jpeg'),
+            ...Array(18).fill('pinscherameixa.jpeg'), ...Array(9).fill('pinschersino.jpeg'),
+            ...Array(4).fill('pinscherbar.jpeg'), ...Array(1).fill('pinschersete.jpeg'),
+            ...Array(1).fill('pinscherdiamante.jpeg')
         ];
 
-        const pagamentos = { 'pindiamante.jpeg': 500, 'pinsete.jpeg': 100, 'pinbar.jpeg': 50, 'pinsino.jpeg': 20, 'pinameixa.jpeg': 12, 'pinlimao.jpeg': 8, 'pincereja.jpeg': 3 };
+        const pagamentos = { 'pinscherdiamante.jpeg': 500, 'pinschersete.jpeg': 100, 'pinscherbar.jpeg': 50, 'pinschersino.jpeg': 20, 'pinscherameixa.jpeg': 12, 'pinscherlimao.jpeg': 8, 'pinschercereja.jpeg': 3 };
         const linhasPagamento = [ [3, 4, 5], [0, 1, 2], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
 
         let apostaAtual = 0.20;
@@ -141,14 +140,12 @@
 
             for(let i=0; i<9; i++) document.getElementById('c'+i).classList.add('active');
 
-            // Deduz o saldo visualmente e trava a máquina
             saldoCloud -= apostaAtual;
             document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
             girando = true;
             document.getElementById('btn-spin').disabled = true;
             status.innerText = "RASTREANDO ALVOS...";
 
-            // Dispara a dedução para a nuvem em background (sem travar a animação)
             api('atualizar_saldo', { novoSaldo: saldoCloud });
 
             let tempo = 0;
@@ -195,7 +192,6 @@
                 document.getElementById('saldo').innerText = saldoCloud.toFixed(2);
                 status.innerText = `ALVO CONFIRMADO. TRANSFERINDO R$ ${premioTotal.toFixed(2)}`;
                 somPremioVicio();
-                // Envia o saldo vitorioso para a nuvem
                 api('atualizar_saldo', { novoSaldo: saldoCloud });
             } else {
                 status.innerText = "ALVO PERDIDO. VARREDURA FALHOU.";
@@ -205,9 +201,8 @@
             document.getElementById('btn-spin').disabled = false;
         }
 
-        // INICIALIZAÇÃO TÁTICA E LEITURA DA NUVEM
         window.onload = async () => {
-            for(let i=0; i<9; i++) document.getElementById('c'+i).style.backgroundImage = `url('pincereja.jpeg')`;
+            for(let i=0; i<9; i++) document.getElementById('c'+i).style.backgroundImage = `url('pinschercereja.jpeg')`;
             
             const { ok, data } = await api('ler_saldo');
             if (ok) {
