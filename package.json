@@ -1,11 +1,5 @@
 {
   "name": "cassino-megaman",
-  "dependencies": {
-    "@vercel/postgres": "latest"
-  }
-}
-{
-  "name": "cassino-megaman",
   "type": "module",
   "dependencies": {
     "@vercel/postgres": "latest"
