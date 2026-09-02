@@ -1,6 +1,6 @@
-import { db } from '@vercel/postgres';
+const { db } = require('@vercel/postgres');
 
-export default async function handler(request, response) {
+module.exports = async function handler(request, response) {
     if (request.method !== 'POST') {
         return response.status(405).json({ erro: 'Acesso negado. Via interceptada.' });
     }
@@ -64,7 +64,6 @@ export default async function handler(request, response) {
             return response.status(200).json({ status: 'Acesso autorizado.', saldo: parseFloat(user.rows[0].saldo) });
         }
 
-        // Operações durante o jogo (exigem senha para confirmar identidade)
         if (operacao === 'atualizar_saldo' || operacao === 'ler_saldo') {
             const valida = await client.sql`SELECT saldo FROM usuarios WHERE email = ${email} AND senha = ${senha}`;
             if (valida.rows.length === 0) return response.status(401).json({ erro: 'Assinatura falhou.' });
