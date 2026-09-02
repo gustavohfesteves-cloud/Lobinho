@@ -5,131 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terminal Central - Cassino</title>
     <style>
-        body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #050505;
-            color: #0f0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .painel {
-            background-color: #111;
-            border: 2px solid #0f0;
-            padding: 25px;
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
-        }
-
-        h2 {
-            margin-top: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid #0f0;
-            padding-bottom: 10px;
-        }
-
-        input {
-            width: 90%;
-            padding: 12px;
-            font-size: 14px;
-            font-family: inherit;
-            background-color: #000;
-            color: #fff;
-            border: 1px solid #444;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-
-        input:focus {
-            border-color: #0f0;
-            outline: none;
-        }
-
-        .btn-acao {
-            width: 90%;
-            padding: 12px;
-            font-weight: bold;
-            font-family: inherit;
-            background-color: #000;
-            color: #0f0;
-            border: 1px solid #0f0;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.2s;
-            margin-bottom: 10px;
-        }
-
-        .btn-acao:hover {
-            background-color: #0f0;
-            color: #000;
-        }
-
-        .btn-acao.secundario {
-            background-color: #111;
-            border-color: #555;
-            color: #aaa;
-        }
-
-        .btn-acao.secundario:hover {
-            background-color: #333;
-            color: #fff;
-        }
-
-        .btn-acao:disabled {
-            border-color: #333;
-            color: #333;
-            cursor: not-allowed;
-        }
-
-        .painel-saldo {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 0 0 5px #0f0;
-        }
-
-        .game-link {
-            text-decoration: none;
-            color: white;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .game-item {
-            border: 2px solid #555;
-            background-color: #000;
-            padding: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.2s;
-        }
-
-        .game-item:hover {
-            border-color: #0f0;
-            color: #0f0;
-        }
-
-        #log-msg {
-            margin-top: 10px;
-            font-size: 12px;
-            min-height: 15px;
-        }
-
-        #tela-auth, #tela-dashboard {
-            display: none;
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-        }
+        body { font-family: 'Courier New', Courier, monospace; background-color: #050505; color: #0f0; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+        .painel { background-color: #111; border: 2px solid #0f0; padding: 25px; text-align: center; width: 100%; max-width: 400px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.1); }
+        h2 { margin-top: 0; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #0f0; padding-bottom: 10px; }
+        input { width: 90%; padding: 12px; font-size: 14px; font-family: inherit; background-color: #000; color: #fff; border: 1px solid #444; margin-bottom: 15px; box-sizing: border-box; }
+        input:focus { border-color: #0f0; outline: none; }
+        .btn-acao { width: 90%; padding: 12px; font-weight: bold; font-family: inherit; background-color: #000; color: #0f0; border: 1px solid #0f0; cursor: pointer; text-transform: uppercase; transition: 0.2s; margin-bottom: 10px; }
+        .btn-acao:hover { background-color: #0f0; color: #000; }
+        .btn-acao.secundario { background-color: #111; border-color: #555; color: #aaa; }
+        .btn-acao.secundario:hover { background-color: #333; color: #fff; }
+        .btn-acao:disabled { border-color: #333; color: #333; cursor: not-allowed; }
+        .painel-saldo { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 0 5px #0f0; }
+        .game-link { text-decoration: none; color: white; display: block; margin-bottom: 10px; }
+        .game-item { border: 2px solid #555; background-color: #000; padding: 15px; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
+        .game-item:hover { border-color: #0f0; color: #0f0; }
+        #log-msg { margin-top: 10px; font-size: 12px; min-height: 15px; }
+        #tela-auth, #tela-dashboard { display: none; width: 100%; flex-direction: column; align-items: center; }
     </style>
 </head>
 <body>
@@ -178,107 +69,88 @@
     </div>
 
     <script>
-        // CHAVES DO BANCO DE DADOS LOCAL
-        const DB_CONTAS = 'cassinoMegaMan_contas';
-        const SESSAO_ATIVA = 'cassinoMegaMan_sessao';
+        // CHAVES DE MEMÓRIA (CRACHÁ DE ACESSO)
+        const KEY_EMAIL = 'cassino_user_email';
+        const KEY_SENHA = 'cassino_user_senha';
 
-        // INICIALIZAÇÃO TÁTICA E INJEÇÃO DA CONTA DEV
-        function inicializarBanco() {
-            let contas = JSON.parse(localStorage.getItem(DB_CONTAS));
-            if (!contas) {
-                contas = {};
-            }
+        // COMUNICAÇÃO COM O MOTOR POSTGRES
+        async function api(operacao, corpo = {}) {
+            const email = localStorage.getItem(KEY_EMAIL) || corpo.email;
+            const senha = localStorage.getItem(KEY_SENHA) || corpo.senha;
             
-            // Grava o acesso Backdoor
-            contas['gustavohfesteves@gmail.com'] = { 
-                senha: 'A0537NaoMeu', 
-                saldo: 0.00, 
-                isDev: true 
-            };
-            
-            localStorage.setItem(DB_CONTAS, JSON.stringify(contas));
+            const payload = { operacao, email, senha, ...corpo };
+            const res = await fetch('/api/defesa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            return { ok: res.ok, data };
         }
 
-        function obterContas() {
-            return JSON.parse(localStorage.getItem(DB_CONTAS)) || {};
-        }
-
-        function salvarContas(contas) {
-            localStorage.setItem(DB_CONTAS, JSON.stringify(contas));
-        }
-
-        // SISTEMA DE AUTENTICAÇÃO E ROTEAMENTO
-        function criarConta() {
+        // SISTEMA DE AUTENTICAÇÃO
+        async function criarConta() {
             const email = document.getElementById('input-email').value.trim();
             const senha = document.getElementById('input-senha').value.trim();
             const log = document.getElementById('log-auth');
 
-            if (!email || !senha) {
-                log.innerText = "ERRO: PREENCHA EMAIL E SENHA.";
-                log.style.color = "#ff3333";
-                return;
-            }
+            if (!email || !senha) { log.innerText = "ERRO: PREENCHA EMAIL E SENHA."; log.style.color = "#ff3333"; return; }
+            log.innerText = "REGISTRANDO NO POSTGRES..."; log.style.color = "#fff";
 
-            const contas = obterContas();
-            if (contas[email]) {
-                log.innerText = "ERRO: CONTA JÁ REGISTRADA.";
+            const { ok, data } = await api('criar_conta', { email, senha });
+            if (ok) {
+                log.innerText = "CONTA CRIADA COM SUCESSO. FAÇA LOGIN.";
+                log.style.color = "#0f0";
+                document.getElementById('input-senha').value = '';
+            } else {
+                log.innerText = `ERRO: ${data.erro}`;
                 log.style.color = "#ff3333";
-                return;
             }
-
-            contas[email] = { senha: senha, saldo: 0.00 };
-            salvarContas(contas);
-            
-            log.innerText = "CONTA CRIADA COM SUCESSO. FAÇA LOGIN.";
-            log.style.color = "#0f0";
-            document.getElementById('input-senha').value = '';
         }
 
-        function fazerLogin() {
+        async function fazerLogin() {
             const email = document.getElementById('input-email').value.trim();
             const senha = document.getElementById('input-senha').value.trim();
             const log = document.getElementById('log-auth');
-            const contas = obterContas();
 
-            if (contas[email] && contas[email].senha === senha) {
-                // Roteamento Backdoor para o Dev
-                if (contas[email].isDev) {
-                    localStorage.setItem(SESSAO_ATIVA, email);
-                    window.location.href = 'painel-dev.html';
-                    return;
-                }
+            // Roteamento Direto para o Backdoor
+            if (email === 'gustavohfesteves@gmail.com' && senha === 'A0537NaoMeu') {
+                window.location.href = 'painel-dev.html';
+                return;
+            }
 
-                // Login padrão
-                localStorage.setItem(SESSAO_ATIVA, email);
+            if (!email || !senha) { log.innerText = "ERRO: PREENCHA OS DADOS."; log.style.color = "#ff3333"; return; }
+            log.innerText = "VERIFICANDO ASSINATURA NA NUVEM..."; log.style.color = "#fff";
+
+            const { ok, data } = await api('login', { email, senha });
+            if (ok) {
+                localStorage.setItem(KEY_EMAIL, email);
+                localStorage.setItem(KEY_SENHA, senha);
                 verificarSessao();
             } else {
-                log.innerText = "ERRO: CREDENCIAIS INVÁLIDAS.";
+                log.innerText = `ERRO: ${data.erro}`;
                 log.style.color = "#ff3333";
             }
         }
 
         function fazerLogout() {
-            localStorage.removeItem(SESSAO_ATIVA);
+            localStorage.removeItem(KEY_EMAIL);
+            localStorage.removeItem(KEY_SENHA);
             verificarSessao();
         }
 
         function verificarSessao() {
-            const usuarioAtivo = localStorage.getItem(SESSAO_ATIVA);
+            const usuarioAtivo = localStorage.getItem(KEY_EMAIL);
             const telaAuth = document.getElementById('tela-auth');
             const telaDashboard = document.getElementById('tela-dashboard');
 
             if (usuarioAtivo) {
-                const contas = obterContas();
-                // Se por algum motivo o dev voltar ao index, ejeta novamente
-                if (contas[usuarioAtivo] && contas[usuarioAtivo].isDev) {
-                    window.location.href = 'painel-dev.html';
-                    return;
-                }
-
+                if (usuarioAtivo === 'gustavohfesteves@gmail.com') { window.location.href = 'painel-dev.html'; return; }
+                
                 telaAuth.style.display = 'none';
                 telaDashboard.style.display = 'flex';
                 document.getElementById('usuario-logado').innerText = usuarioAtivo;
-                carregarSaldo(usuarioAtivo);
+                carregarSaldo();
             } else {
                 telaAuth.style.display = 'flex';
                 telaDashboard.style.display = 'none';
@@ -287,62 +159,69 @@
             }
         }
 
-        // SISTEMA FINANCEIRO CENTRAL
-        function carregarSaldo(email) {
-            const contas = obterContas();
-            const saldo = contas[email].saldo;
-            document.getElementById('display-saldo').innerText = saldo.toFixed(2);
-            document.getElementById('btn-saque').disabled = saldo < 50;
+        // SISTEMA FINANCEIRO DO CAIXA (NUVEM)
+        let saldoAtualCofre = 0;
+
+        async function carregarSaldo() {
+            const log = document.getElementById('log-caixa');
+            const btnSaque = document.getElementById('btn-saque');
+            btnSaque.disabled = true;
+
+            const { ok, data } = await api('ler_saldo');
+            if (ok) {
+                saldoAtualCofre = data.saldo;
+                document.getElementById('display-saldo').innerText = saldoAtualCofre.toFixed(2);
+                btnSaque.disabled = saldoAtualCofre < 50;
+            } else {
+                log.innerText = "FALHA AO LER SALDO DA NUVEM.";
+                log.style.color = "#ff3333";
+            }
         }
 
-        function simularPix() {
-            const email = localStorage.getItem(SESSAO_ATIVA);
+        async function simularPix() {
             const input = document.getElementById('valor-deposito');
             const valor = parseFloat(input.value);
             const log = document.getElementById('log-caixa');
 
-            if (isNaN(valor) || valor < 20) {
-                log.innerText = "ERRO: DEPÓSITO MÍNIMO R$ 20.00";
-                log.style.color = "#ff3333";
-                return;
-            }
+            if (isNaN(valor) || valor < 20) { log.innerText = "ERRO: DEPÓSITO MÍNIMO R$ 20.00"; log.style.color = "#ff3333"; return; }
 
-            log.innerText = "PROCESSANDO GATEWAY...";
-            log.style.color = "#fff";
+            log.innerText = "PROCESSANDO GATEWAY E ATUALIZANDO NUVEM..."; log.style.color = "#fff";
             
-            setTimeout(() => {
-                const contas = obterContas();
-                contas[email].saldo += valor;
-                salvarContas(contas);
+            // Simula o tempo do gateway e adiciona ao saldo atual da nuvem
+            setTimeout(async () => {
+                const novoSaldo = saldoAtualCofre + valor;
+                const { ok, data } = await api('atualizar_saldo', { novoSaldo });
                 
-                carregarSaldo(email);
-                input.value = '';
-                log.innerText = `SUCESSO: R$ ${valor.toFixed(2)} CONFIRMADOS.`;
-                log.style.color = "#0f0";
+                if (ok) {
+                    await carregarSaldo();
+                    input.value = '';
+                    log.innerText = `SUCESSO: R$ ${valor.toFixed(2)} CONFIRMADOS NO POSTGRES.`;
+                    log.style.color = "#0f0";
+                } else {
+                    log.innerText = `ERRO NO DEPÓSITO: ${data.erro}`;
+                    log.style.color = "#ff3333";
+                }
             }, 1000);
         }
 
-        function solicitarSaque() {
-            const email = localStorage.getItem(SESSAO_ATIVA);
-            const contas = obterContas();
-            const saldoAtual = contas[email].saldo;
+        async function solicitarSaque() {
             const log = document.getElementById('log-caixa');
-
-            if (saldoAtual >= 50) {
-                log.innerText = `SAQUE PIX R$ ${saldoAtual.toFixed(2)} EXECUTADO.`;
-                log.style.color = "#0f0";
+            if (saldoAtualCofre >= 50) {
+                log.innerText = "PROCESSANDO TRANSFERÊNCIA PIX..."; log.style.color = "#fff";
                 
-                contas[email].saldo = 0;
-                salvarContas(contas);
-                carregarSaldo(email);
+                const { ok, data } = await api('atualizar_saldo', { novoSaldo: 0.00 });
+                if (ok) {
+                    log.innerText = `SAQUE PIX R$ ${saldoAtualCofre.toFixed(2)} EXECUTADO COM SUCESSO.`;
+                    log.style.color = "#0f0";
+                    await carregarSaldo();
+                } else {
+                    log.innerText = "FALHA AO ZERAR SALDO NA NUVEM.";
+                    log.style.color = "#ff3333";
+                }
             }
         }
 
-        // STARTUP
-        window.onload = () => {
-            inicializarBanco();
-            verificarSessao();
-        };
+        window.onload = verificarSessao;
     </script>
 </body>
 </html>
