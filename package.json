@@ -1,0 +1,6 @@
+{
+  "name": "cassino-megaman",
+  "dependencies": {
+    "@vercel/postgres": "latest"
+  }
+}
